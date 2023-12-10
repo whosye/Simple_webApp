@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, url_for
 from flask_restful import Api, Resource, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager,  login_user, login_required, current_user, logout_user, UserMixin
-
+from datetime import datetime
 app = Flask(__name__)
 api = Api(app)
 login_manager = LoginManager(app)
@@ -19,13 +19,42 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(10), unique=True, nullable=False)
     email = db.Column(db.String(15),  unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-
+    joined  = db.Column(db.Date, default=datetime.utcnow)
+    movies = db.relationship('Moviestack', backref='user', lazy=True)
+    comments = db.relationship('Comments', backref='user', lazy=True)
+    images = db.relationship('Image', backref='user', lazy=True)
     def __repr__(self):
         return f"User {self.username}, {self.email}"
-    
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(int(user_id))   
+
+class Moviestack(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    movieName = db.Column(db.String(10), unique=True, nullable=False)
+    year = db.Column(db.Integer, db.CheckConstraint('year >= 1800 AND year <= 3000'))
+    addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
+    date = db.Column(db.Date, default=datetime.utcnow)
+    comments = db.relationship('Comments', backref='moviestack', lazy=True)
+
+class Comments(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.String(10),db.ForeignKey("user.id") )
+    Movie = db.Column(db.String(10), db.ForeignKey("moviestack.id"))
+    date  = db.Column(db.Date, default=datetime.utcnow)
+
+class Image(db.Model):
+    __tablename__ = 'images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    file_data = db.Column(db.LargeBinary, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    date  = db.Column(db.Date, default=datetime.utcnow)
+
+
 
 
 
@@ -35,9 +64,9 @@ def home():
 
 @app.route('/register')
 def register():
-    print(f"Current user is {current_user.username} ")
-    if current_user.is_authenticated:
-        logout_user()
+    if current_user:
+        if current_user.is_authenticated:
+            logout_user()
     return render_template('register.html')
 
 @app.route('/movie')

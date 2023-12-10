@@ -11,8 +11,9 @@
 
     <h1>Welcome, {{ user_data.username }}!</h1>
     <div id="user_panel">
+        <img src="{{ url_for('static', filename='default.png') }}" alt="Image Description">
+        <button id=settings>Log out</button>
         <button id=button>Log out</button>
-     
     </div>
 </body>
 
@@ -20,6 +21,7 @@
     document.getElementById("button").addEventListener("click", LogOut);
 
     async function LogOut(){
+
         try{
             let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
 
