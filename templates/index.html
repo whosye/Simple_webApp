@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+            #drop {
+            
+                background-color: blueviolet;
+                width : 20px;
+                height: 20px;
+                border: 2;
+                transform: rotate(0deg);
+            }
+            h1{
+                color:green;
+            }
+
+            .main-container {
+        
+                text-align: center;
+            }
+
+            #data_collection{
+                position: fixed;
+                text-align: left;
+            }
+
+            .Parent{
+                position: fixed;
+                right: 50%;
+                
+            }
+        </style>
+
+    </head>
+    <body>
+        <h1> My new page </h1>
+        <hr>
+        <br>
+    <div class="main-container">
+
+        <div id="data_collection">
+            <label for="List">Data to Create</label>
+            <ul id="List">
+            </ul>
+    
+        </div>
+
+
+        <div class="main-container">
+            <button id="fetchHello">Fetch Hello, World</button>
+            <div id="messageContainer">Default message</div>
+            <br>
+
+            <label for ="input">Insert</label>
+            <input id="input"> Insert movie </input>
+            <button id="inputButton">confirm</button>
+        </div>
+
+        <br>
+
+        <div class="main-container">
+            <div>
+            <label for= "rotate">Rotate label</label>
+            
+            <button id="rotate">Rotate</button>
+        </div>
+        <br>
+        <div>
+            <label for= "try">Try</label>
+            <input id="try"></input>
+            <button id="try_button">confirm</button>
+        </div>
+        
+    </div>
+
+    
+
+
+
+
+        <script>
+
+                let List = document.getElementById("List");
+                document.getElementById('try_button').addEventListener('click', function () {
+                    let dataTry = document.getElementById("try");
+                    let item = document.createElement("li");
+                    item.textContent = dataTry.value;
+                    List.appendChild(item)
+                })
+
+
+
+
+                document.getElementById('fetchHello').addEventListener('click', function () {
+                    fetch('/go')  
+                        .then(response => response.json())  
+                        .then(data => {
+                            console.log(data);
+                            document.getElementById('messageContainer').textContent = data.message;
+                        })
+                        .catch(error => {
+                            console.error(error);
+                        });
+                });
+
+                document.getElementById('inputButton').addEventListener('click', function () {
+                    let value = document.getElementById("input").value;
+                    console.log(`value:  ${value}`);
+                    fetch(`/go`, {
+                        method: `POST`,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ movie: value }) 
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                    
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+                });
+
+                
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styleReg.css') }}">
+</head>
+<body>
+  
+
+    <button id="login_button" aria-roledescription="" > Go back to login page</button>
+    <div id="wrapper"></div>
+        <div class="register_main">
+            <h1>Welcome to register page</h1>
+            <h2>To register, please fill these ..</h2>
+        </div>
+        <div id="reg">
+       
+                <label for="nick_reg_form" class="reg_label">Insert your Nick</label>
+                <input id="nick_reg_form" required="true" placeholder="userNick"><br>
+                <br>
+                <label for="email_reg_form" class="reg_label">Insert your Email</label>
+                <input id="email_reg_form" type="email" required="true" placeholder="fokume@gmail.com"><br>
+                <br>
+                <label for="password_reg_form1" class="reg_label">Choose password</label>
+                <input id="password_reg_form1" required="true" type="password" maxlength="20" placeholder="*****"><br>
+                <br>
+            
+                <label for="password_reg_form2" class="reg_label" >Consfirm password</label>
+                <input id="password_reg_form2" required="true" type="password" maxlength="20" placeholder="*****" ><br>
+                <br>
+                <button id="button_red">Submit</button>
+
+        
+            <div id="Email_allert">
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const ButtonReg = document.getElementById("button_red")
+    let password1 = document.getElementById("password_reg_form1")
+    let password2 = document.getElementById("password_reg_form2")
+    document.getElementById("login_button").addEventListener("click",() => window.location.href = "/")
+    password1.addEventListener('input' , () => {
+        console.log("checking");
+    if (password1.value === "" || password2.value === "") {
+        document.getElementById("Email_allert").style.visibility = 'hidden';
+        console.log("checking both none");
+        return;
+    }else{
+        console.log("lets go")
+        console.log(`${password2.value}`)
+        if (password1.value !== password2.value){
+            document.getElementById("Email_allert").style.visibility = 'visible';
+            document.getElementById("Email_allert").innerHTML = "Passwords do not match!"
+            ButtonReg.disabled = true
+        }else{
+            ButtonReg.disabled = false
+            document.getElementById("Email_allert").style.visibility = 'hidden';
+        }
+
+    }
+    });
+    password2.addEventListener('input' , () => {
+        console.log("checking");
+    if (password1.value === "" || password2.value === "") {
+        document.getElementById("Email_allert").style.visibility = 'hidden';
+        console.log("checking both none");
+        return;
+    }else{
+        if (password1.value !== password2.value){
+            document.getElementById("Email_allert").style.visibility = 'visible';
+            document.getElementById("Email_allert").innerHTML = "Passwords do not match!"
+            ButtonReg.disabled = true
+        }
+        else{
+            ButtonReg.disabled = false
+            document.getElementById("Email_allert").style.visibility = 'hidden';
+        }
+    }
+    });
+
+    ButtonReg.addEventListener('click', sendData)
+    async function sendData(){
+        const userNick = document.getElementById('nick_reg_form').value;
+        const userEmail = document.getElementById('email_reg_form').value;
+        const userPassword = password2.value;
+        document.getElementById('userPassword')
+        try{
+        let response = await fetch(`/new_user_reg`, {
+                        method: `POST`,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({  "email" : userEmail , "password" :userPassword, 'nick': userNick}) 
+                    })
+        if (response.ok){
+            let data  = await response.json()
+            if (data.message == "ok"){
+                console.log(data.message)
+                document.getElementById("Email_allert").style.visibility = 'visible';
+                document.getElementById("Email_allert").innerHTML = "Succesful";
+            }
+            else{
+                console.log(data.message)
+                document.getElementById("Email_allert").style.visibility = 'visible';
+                document.getElementById("Email_allert").innerHTML = "Email, is taken";
+            }
+        }
+    }
+    catch(error){
+        console.log(`error ${error}`)
+            }
+    }
+    
+
+     
+    
+</script>
+</html>

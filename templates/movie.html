@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
+    <p>Email: {{ user_data.email }}</p>
+</head>
+<body>
+
+
+    <h1>Welcome, {{ user_data.username }}!</h1>
+    <div id="user_panel">
+        <button id=button>Log out</button>
+     
+    </div>
+</body>
+
+<script>
+    document.getElementById("button").addEventListener("click", LogOut);
+
+    async function LogOut(){
+        try{
+            let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
+
+            if (response.ok){
+                console.log("response.ok")
+                let data = await response.json();
+                if (data.message == "succes"){
+                    window.location.href = "/"
+                }
+            }
+        }
+        catch(error){
+            console.log(`error occured ${error}`);
+        }
+    }
+</script>
+</html>

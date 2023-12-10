@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log_in</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    
+
+    <div class="center">
+        <div id="main">
+            <h1> Greetings traveler</h1>
+            <h2>Please, log in.</h2>
+        </div>
+
+
+        <div class="inner_form">
+            <form>
+              
+                <label for="email_in">Email</label>
+                <input id="email_in" type="email" placeholder="myEmail@google.com" required="true"></input>
+            </form>
+    
+            <form>
+                <label for="password_in">Password</label>
+                <input id="password_in" type="password" placeholder="****" required="true"></input>           
+            </form>
+    
+        </div>
+
+        <button id="Submit">Log In</button>
+
+        <div id="URL_div">
+            <label for = "url" id="url_label">Don't have  an account, yet? </label>
+            <a id="url" href="{{url_for('register')}}">Go to Register Page</a>
+        </div>
+ 
+
+       
+    </div>
+
+
+</body>
+
+    <script>
+        
+        let button = document.getElementById("Submit").addEventListener('click', SubmitFn);
+
+
+        async function SubmitFn(){
+            let email_value = document.getElementById("email_in").value;
+            let password_value = document.getElementById("password_in").value;
+                try{
+                let response = await fetch(`/log`, {
+                            method: `POST`,
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({  "email" : email_value , "password" : password_value}) 
+                        })
+                        if (response.ok){
+                            let data  = await response.json()
+                            if (data.message == "ok"){
+                                window.location.href = "/movie"
+                            }else{
+                                console.log(`nepodarilo se najit uzivatele s emailem ${email_value}`)
+                            }
+                        }
+                    }
+                catch(error){
+                        console.log(`error ${error}`)
+                            }
+                       
+                    };
+                   
+    </script>
+</html>
+
+

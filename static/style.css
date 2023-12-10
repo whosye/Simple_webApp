@@ -1,0 +1,75 @@
+
+
+body{
+    background-color: aquamarine;
+    font-family: 'Arial', sans-serif;
+}
+.center {
+    text-align: center;
+    border: 10px;
+    background-color: aqua;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 1px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+
+
+}
+
+#main{
+    text-align: center;
+    color: brown;
+}
+.inner_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
+label {
+width: 120px; 
+    text-align: left;
+
+}
+
+#Submit{
+    text-align: center;
+    width: 100px;
+    height: 50px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-color: cadetblue;
+    font-family: 'Helvetica', sans-serif;
+ 
+
+}
+
+#URL_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+}
+
+#url{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;  
+    margin-left: 10px;
+}
+
+
+#url_label{
+    text-align: left;
+}

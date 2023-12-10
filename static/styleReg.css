@@ -1,0 +1,48 @@
+
+body{
+    background-color: aquamarine;
+    font-family: 'Arial', sans-serif;
+
+}
+.register_main{
+    text-align: center;
+    color: brown;
+}
+
+
+#reg{
+    text-align: center;
+    background-color: aqua;
+    width: 600px;
+    margin:  auto;
+    height:300px;
+    border-radius: 20px;
+    border-style: solid;
+}
+#nick_reg_form{
+    background-color: none;
+    margin-top: 10px;
+
+}
+
+.reg_label {
+    display: inline-block;
+    width: 150px; 
+}
+
+#button_red{
+    width: 100px;
+    height: 40px;
+    background-color: cadetblue;
+}
+
+#login_button{
+    width: 100px;
+    height: 40px;
+    background-color: cadetblue;
+    top: 40px; 
+    left: 40px;
+    position: absolute;
+    font-family: 'Helvetica', sans-serif;
+
+}
