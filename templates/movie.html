@@ -4,38 +4,305 @@
     <meta charset="UTF-8">
     <title>Movies</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
-    <p>Email: {{ user_data.email }}</p>
+
+
 </head>
 <body>
-
-
     <h1>Welcome, {{ user_data.username }}!</h1>
+
     <div id="user_panel">
-        <img src="{{ url_for('static', filename='default.png') }}" alt="Image Description">
-        <button id=settings>Log out</button>
-        <button id=button>Log out</button>
+        <img id= "avatar" src="{{ url_for('static', filename='default.png') }}" alt="Image Description">
+
+            <button id="log_out">Log out</button>
+            <button id="settings"></button>
     </div>
+    <br>
+
+
+    <div id="settings_panel">
+        <div class="grid-item"id="grid-item-1">Email: </div>
+        <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
+        <div class="grid-item"id="grid-item-3"><button id="grid_button1" >Change</button></div>
+        <div class="grid-item"id="grid-item-4">Nick: </div>
+        <div class="grid-item"id="grid-item-5">{{user_data.username}}</div>
+        <div class="grid-item"id="grid-item-6"><button id="grid_button2" >Change</button></div>
+        <div class="grid-item"id="grid-item-7">Photo: </div>
+        <div class="grid-item"id="grid-item-8"><button id="grid_button3" >Change</button></div>
+        <div class="grid-item"id="grid-item-9"></div>
+        <div class="grid-item"id="grid-item-10">Password: </div>
+        <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
+    </div>
+    
+
+    <div id="modal">
+    </div>
+
+    <div id= "change">
+        <div id="change_grid">
+            <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
+            <div class="grid-item1"><input id="new_email" type="email"></div>
+            <div class="grid-item1"><button id="Submit_new_email">Submit</button></div>
+            <div class="grid-item1"><button id="Cancel_change1">Cancel</button></div>
+        </div>
+     
+        <div>
+            <p id="Email_Result"></p>
+        </div>
+    </div>
+
+    <div id= "change2">
+        <div id="change_grid">
+            <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
+            <div class="grid-item1"><input id="new_nick"></div>
+            <div class="grid-item1"><button id="Submit_new_nick">Submit</button></div>
+            <div class="grid-item1"><button id="Cancel_change2">Cancel</button></div>
+        </div>
+     
+    </div>
+
+    <div id= "change3">
+            <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
+        
+        <div>
+            <p id="Photo_Result"></p>
+        </div>
+    </div>
+
+
+    <div id= "change4">
+        <div id="change_grid">
+            <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
+            <div class="grid-item1"><input id="old_password"></div>
+
+            <div class="grid-item1"><label for="new_password" id="new_password_id">New password</label></div>
+            <div class="grid-item1"><input id="new_password"></div>
+
+            <div class="grid-item1"><label for="confirm_password" id="confirm_password_id">Confirm password</label></div>
+            <div class="grid-item1"><input id="confirm_password"></div>
+
+        </div>
+     
+        <div id="change_grid4_add">
+            <button id="Submit_new_password">Submit</button>
+            <button id="Cancel_change4">Cancel</button>
+           
+        </div>
+        <div><p id="password_Result"></p> </div>
+    </div>
+
+
 </body>
 
 <script>
-    document.getElementById("button").addEventListener("click", LogOut);
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("log_out").addEventListener("click", LogOut);
 
-    async function LogOut(){
+        async function LogOut(){
 
-        try{
-            let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
-
-            if (response.ok){
-                console.log("response.ok")
-                let data = await response.json();
-                if (data.message == "succes"){
-                    window.location.href = "/"
+            try{
+                let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
+                if (response.ok){
+                    console.log("response.ok")
+                    let data = await response.json();
+                    if (data.message == "succes"){
+                        window.location.href = "/"
+                    }
                 }
             }
+            catch(error){
+                console.log(`error occured ${error}`);
+            }
         }
-        catch(error){
-            console.log(`error occured ${error}`);
+
+        const Settings_panel = document.getElementById("settings_panel")
+        Settings_panel.style.visibility = 'hidden';
+        document.getElementById("settings").addEventListener("click", ()=>{
+            if (Settings_panel.style.visibility === 'hidden'){
+                Settings_panel.style.visibility = 'visible'
+            }else{
+                Settings_panel.style.visibility = 'hidden'
+            }
+        
+            });
+
+        document.getElementById("grid_button1").addEventListener("click", ()=> dimm('email'));
+        document.getElementById("grid_button2").addEventListener("click", ()=> dimm('nick'));
+        document.getElementById("grid_button3").addEventListener("click", ()=> dimm('photo'));
+        document.getElementById("grid_button4").addEventListener("click", ()=> dimm('password'));
+
+
+        const Modal = document.getElementById("modal");
+        const Change = document.getElementById("change");
+        const Change2 = document.getElementById("change2");
+        const Change3 = document.getElementById("change3");
+        const Change4 = document.getElementById("change4");
+        Modal.style.visibility = 'hidden';
+        Change.style.visibility = 'hidden';
+        Change2.style.visibility = 'hidden';
+        Change3.style.visibility = 'hidden';
+        Change4.style.visibility = 'hidden';
+        function dimm(invoke){
+            if ( Modal.style.visibility === 'hidden'){
+                Modal.style.visibility = 'visible';
+                if (invoke == 'email'){
+                    Change.style.visibility = 'visible';
+                }else if (invoke =='photo'){
+                    Change3.style.visibility = 'visible';
+                }
+                else if(invoke =='password'){
+                    Change4.style.visibility = 'visible';
+                }
+                else{
+                    Change2.style.visibility = 'visible';
+                }
+                
+            }else{
+                Modal.style.visibility = 'hidden';
+                Change.style.visibility = 'hidden';
+                Change2.style.visibility = 'hidden';
+                Change3.style.visibility = 'hidden';
+                Change4.style.visibility = 'hidden';
+
+            }
         }
-    }
+
+        document.getElementById("Cancel_change1").addEventListener("click", () => Cancel('cancel1'));
+        document.getElementById("Cancel_change2").addEventListener("click", () => Cancel('cancel2'));
+        document.getElementById("Cancel_change3").addEventListener("click", () => Cancel('cancel3'));
+        document.getElementById("Cancel_change4").addEventListener("click", () => Cancel('cancel4'));
+
+        function Cancel(invoke) {
+            Modal.style.visibility = 'hidden';
+            console.log(invoke)
+            console.log("hiding")
+            if (invoke == "cancel1"){
+                Change.style.visibility = 'hidden';
+            }else if (invoke == "cancel2"){
+                Change2.style.visibility = 'hidden';
+            }else if (invoke == "cancel3"){
+                Change3.style.visibility = 'hidden';
+            }else if (invoke == "cancel4"){
+                Change4.style.visibility = 'hidden';
+            }else{
+
+            }
+        }
+
+
+        const new_email = document.getElementById("Submit_new_email");
+        const new_nick = document.getElementById('Submit_new_nick');
+
+
+        new_email.addEventListener("click", () => sendNew('newEmail', document.getElementById('new_email').value));
+        new_nick.addEventListener("click",  () => sendNew('newNick',   document.getElementById('new_nick').value));
+
+        async function  sendNew(type, item){
+            try{
+                let response = await fetch('/alter', { 
+                    method: "PUT",
+                    headers: {'Content-type' : 'application/json'},
+                    body: JSON.stringify({ [type]: item}) });
+       
+                if (response.ok){
+                    let data = await response.json();
+                    console.log(`data ${data.message}`);
+                    if (data.message=="ok"){
+                        document.getElementById("Email_Result").innerText = "Succesfuly changed, refresh";
+                        document.getElementById("Email_Result").style.backgroundColor= "green";
+                    }
+                }
+           
+                }catch(error){
+                    console.log(`error occured ${error}`);
+                }
+            };
+
+            const oldP =  document.getElementById("old_password");
+            const newP=  document.getElementById("new_password");
+            const confirmP=  document.getElementById("confirm_password");
+            const submit_pasword = document.getElementById("Submit_new_password")
+
+            newP.addEventListener('input',() =>{
+                console.log(`${confirmP.value} ==? ${newP.value}`)
+                if (confirmP.value === "" ||   newP.value===""){
+                    document.getElementById("password_Result").innerText = ""
+                    document.getElementById("password_Result").style.backgroundColor= "";
+                    return
+                }else{
+                    console.log(`${confirmP.value} ==? ${newP.value}`)
+                    if (confirmP.value != newP.value ){
+                        submit_pasword.disabled= true
+                        document.getElementById("password_Result").innerText = "new passwords does not match"
+                        document.getElementById("password_Result").style.backgroundColor= "red";
+
+                    }else{
+                        submit_pasword.disabled= false
+                        document.getElementById("password_Result").innerText = ""
+                        document.getElementById("password_Result").style.backgroundColor= "";
+                    }
+                }
+
+            });
+
+       
+            confirmP.addEventListener('input',() =>{
+                console.log(`${confirmP.value} ==? ${newP.value}`)
+                if (confirmP.value === "" ||    newP.value===""){
+                    document.getElementById("password_Result").innerText = ""
+                    document.getElementById("password_Result").style.backgroundColor= "";
+                    return
+                }else{
+                    console.log(`${confirmP.value} ==? ${newP.value}`)
+                    if (confirmP.value != newP.value ){
+                        submit_pasword.disabled= true
+                        document.getElementById("password_Result").innerText = "new passwords does not match"
+                        document.getElementById("password_Result").style.backgroundColor= "red";
+
+                    }else{
+                        submit_pasword.disabled= false
+                        document.getElementById("password_Result").innerText = ""
+                        document.getElementById("password_Result").style.backgroundColor= "";
+                    }
+                }
+                
+            });
+
+           
+
+            submit_pasword.addEventListener("click", newPassword)
+            
+            
+            async function newPassword(){
+                try{
+                    let response = await fetch('/alter', {
+                        method: "PUT",
+                        headers: {'Content-type' : 'application/json'}, 
+                        body: JSON.stringify({
+                            'oldPassword' : oldP.value,
+                            'newPassword' : confirmP.value
+                        })
+                    });
+                    let data = await response.json()
+                        console.log(data.message)
+                    if (data.message == "ok"){
+                        document.getElementById("password_Result").innerText = "Password changed Succesfuly";
+                        document.getElementById("password_Result").style.backgroundColor= "green";
+                    }else if (data.message == "old_password"){
+                        document.getElementById("password_Result").innerText = "new passwords does not match";
+                        document.getElementById("password_Result").style.backgroundColor= "red";
+
+                    }else{
+                        document.getElementById("password_Result").innerText = "Something went wrong";
+                        document.getElementById("password_Result").style.backgroundColor= "red";
+                    }
+                }catch(error){
+                    console.log(`This error occured ${error}`);
+                }
+            }
+                    
+            
+    });
+
+
 </script>
 </html>

@@ -4,6 +4,7 @@ from flask_restful import Api, Resource, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager,  login_user, login_required, current_user, logout_user, UserMixin
 from datetime import datetime
+from functions import resizeImg
 app = Flask(__name__)
 api = Api(app)
 login_manager = LoginManager(app)
@@ -130,10 +131,39 @@ class UserRegister(Resource):
             response_message = "no"
             return {"message": response_message}, 201
 
+class UserAlter(Resource):
     
+    def put(self):
+  
+        try:
+            item = request.json
+        
+            if item.get('newEmail'):
+                new = item.get('newEmail')
+                current_user.email = new
+            elif item.get('oldPassword'):
+                print(f"current password {current_user.password}")
+                
+                if item.get('oldPassword') != current_user.password:
+                    return {"message" : "old_password"}
+                else:
+                    current_user.password = item.get("newPassword")
+                
+            else:
+                new = item.get('newNick')
+                current_user.username = new
+                
+            if current_user.is_authenticated:
+                db.session.commit()
+                return {"message" : "ok"}
+               
+        except:
+            return {"message" : "error"}
+        
+        
 api.add_resource(UsersLogin,"/log")
 api.add_resource(UserRegister,"/new_user_reg")
-
+api.add_resource(UserAlter,'/alter')
 if __name__ == "__main__":
 
     app.run(host="0.0.0.0", port=5000, debug=True)
