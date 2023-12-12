@@ -11,7 +11,7 @@
     <h1>Welcome, {{ user_data.username }}!</h1>
 
     <div id="user_panel">
-        <img id= "avatar" src="{{ url_for('static', filename='default.png') }}" alt="Image Description">
+        <img id= "avatar" alt="User_Photo">
 
             <button id="log_out">Log out</button>
             <button id="settings"></button>
@@ -61,8 +61,14 @@
     </div>
 
     <div id= "change3">
+        <form id="uploadForm" enctype="multipart/form-data">
+        <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
+            <div class="grid-item1"><input type=file id="fileInput"></div>
             <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
-        
+            <div class="grid-item1"><button id="Submit_photo">Submit</button></div>
+        </form>
+            <div class="grid-item1"><button id="Uploaded_photo">Show Uploaded</button></div>
+
         <div>
             <p id="Photo_Result"></p>
         </div>
@@ -90,7 +96,11 @@
         <div><p id="password_Result"></p> </div>
     </div>
 
-
+    <div id="showImages">
+        <div class="grid-item1"><img id= "avatar" alt="User_Photo"> </div>
+        <div class="grid-item1"><button id="delete_photo">Delete</button></div>
+        <div class="grid-item1"><button id="choose_photo">Choose</button></div>
+    </div>
 </body>
 
 <script>
@@ -300,9 +310,82 @@
                 }
             }
                     
+            document.getElementById("Submit_photo").addEventListener('click', uploadImg)
             
-    });
+            async function uploadImg(){
 
+                const fileInput = document.getElementById('fileInput');
+                if (fileInput.files.length > 0){
+                    const formData = new FormData();
+                    formData.append('file', fileInput.files[0]);
+                try{
+                    let response = await fetch('/alter',{
+                        method: 'POST',
+                        body: formData
+                        // content type is by default 'multipart/form-data'
+                    })
+                    data =  await response.json()
+
+                    if (data.message == 'ok'){
+                        document.getElementById("photo_Result").innerText = "Upload Succesfuly";
+                        document.getElementById("photo_Result").style.backgroundColor= "green";
+                        // TOdo handle more than 3 photos 
+                    }else{
+                        document.getElementById("photo_Result").innerText = "Something went wrong";
+                        document.getElementById("photo_Result").style.backgroundColor= "red";
+                    }
+
+                }catch(error){
+                    console.log(`This error occured ${error}`);
+                }
+            }else{
+                document.getElementById("photo_Result").innerText = "Something went wrong";
+                document.getElementById("photo_Result").style.backgroundColor= "red";
+            }
+            }
+        
+            window.addEventListener('load', loadAvatar)
+            async function loadAvatar() {
+                try{
+                    let response = await fetch('/avatar',{
+                        method: "GET",
+                        headers: {'Content-type' : 'application/json'}, 
+                    })
+                    data = await response.json();
+                    console.log(data.current_avatar);
+                    if (data.current_avatar ==="default"){
+                        document.getElementById("avatar").src = 'static/default.png';
+                    }
+                }catch(error){
+                    console.log(`Error ${error}`);
+                }
+            }
+            
+            document.getElementById("showImages").style.visibility= "hidden";
+            document.getElementById("Uploaded_photo").addEventListener('click', showUploaded);
+            
+            async function showUploaded(){
+                try{
+                    let response = await fetch('/avatar',{
+                        method: "PUT",
+                        headers: {'Content-type' : 'application/json'}, 
+                        body: JSON.stringify({"get" : "user_data"})
+                    })
+
+                    data = await response.json();
+
+                    const container = document.getElementById("showImages");
+                    for (const key in data.data) {
+                       console.log(key)
+                    }
+        
+                }catch(error){
+                    console.log(`error ${error}`)
+                }
+            }
+
+    });
+/*"{{ url_for('static', filename='default.png') }}"*/
 
 </script>
 </html>

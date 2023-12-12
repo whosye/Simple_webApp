@@ -5,6 +5,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager,  login_user, login_required, current_user, logout_user, UserMixin
 from datetime import datetime
 from functions import resizeImg
+import urllib.request
+import os 
+
+
+
 app = Flask(__name__)
 api = Api(app)
 login_manager = LoginManager(app)
@@ -21,6 +26,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(15),  unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     joined  = db.Column(db.Date, default=datetime.utcnow)
+    avatar = db.Column(db.String)
     movies = db.relationship('Moviestack', backref='user', lazy=True)
     comments = db.relationship('Comments', backref='user', lazy=True)
     images = db.relationship('Image', backref='user', lazy=True)
@@ -28,7 +34,7 @@ class User(db.Model, UserMixin):
         return f"User {self.username}, {self.email}"
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))   
+    return db.session.query(User).get(int(user_id))
 
 class Moviestack(db.Model):
 
@@ -51,8 +57,8 @@ class Image(db.Model):
     __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
-    file_data = db.Column(db.LargeBinary, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(100), nullable=False)
     date  = db.Column(db.Date, default=datetime.utcnow)
 
 
@@ -122,7 +128,7 @@ class UserRegister(Resource):
             print(userEmail)
             print(userPassword)
             print(userNick)
-            newUser = User(username=userNick,email= userEmail,password=userPassword)
+            newUser = User(username=userNick,email= userEmail,password=userPassword, avatar = "default")
             db.session.add( newUser )
             db.session.commit()
             response_message = "ok"
@@ -160,11 +166,52 @@ class UserAlter(Resource):
         except:
             return {"message" : "error"}
         
+    def post(self):
+        print("hi post ", current_user.id)
+        if 'file' not in request.files:
+            print("problem")
+            return {'message': 'No file part'}, 400
+        
+       
+        print("img request")
+        file = request.files['file']
+        img_db = Image(user_id= current_user.id, name=file.filename )
+        db.session.add(img_db)
+        db.session.commit()
+        key = img_db.id
+        print(f" key {key}")
+        resizeImg(img=file, name=file.filename, key= key)
+
+        return {'message' : 'ok'}
+
+    
+class SetAvatar(Resource):
+    def get(self):
+        try:
+            return {"current_avatar" : current_user.avatar}
+        except:
+            return {'message': 'no'}
+        
+    def put(self):
+        
+        item= request.json
+        current_user.id
+        imgs_list = ['static/default.png']
+        for img in os.listdir('images'):
+            imgs_list.append(f'images/{img}')
+        return {'data' :imgs_list}
+        
+        
+        
+       
         
 api.add_resource(UsersLogin,"/log")
 api.add_resource(UserRegister,"/new_user_reg")
 api.add_resource(UserAlter,'/alter')
+api.add_resource(SetAvatar,'/avatar')
+
+
 if __name__ == "__main__":
 
     app.run(host="0.0.0.0", port=5000, debug=True)
-    db.init_app()
+    db.init_app(app)

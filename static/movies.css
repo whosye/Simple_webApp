@@ -106,7 +106,7 @@ h1{
     background-color: rgba(0, 0, 0, 0.7);
   
 }
-#change, #change2, #change3,#change4 {
+#change, #change2, #change3,#change4, #showImages{
     position: fixed;
     display: flex;
     align-items: center;
@@ -153,4 +153,10 @@ h1{
 #password_Result{
     display: flex;
     justify-content: center;
+}
+
+#showImages{
+    width: 300px;
+    height: 800px;
+    background-color:  blanchedalmond;
 }

@@ -1,11 +1,14 @@
 
 
 
-def resizeImg(img_name):
+def resizeImg(img, name, key):
     from PIL import Image
     import os 
-    img = Image.open(os.path.join(os.path.abspath("static"), img_name))
-    target_size = (100, 100)
-    img_resized = img.resize(target_size, Image.BICUBIC)
-    img_resized.save(os.path.join(os.path.abspath("static"), img_name))
     
+    name = name[:-4]
+    target_size = (100, 100)
+    img =Image.open(img)
+    img_resized = img.resize(target_size, Image.BICUBIC)
+    print("tohle je to jemnio", name)
+    img_resized.save(f'images/{key}_!_{name}.jpg')
+   
