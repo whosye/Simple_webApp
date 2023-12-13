@@ -10,5 +10,6 @@ def resizeImg(img, name, key):
     img =Image.open(img)
     img_resized = img.resize(target_size, Image.BICUBIC)
     print("tohle je to jemnio", name)
-    img_resized.save(f'images/{key}_!_{name}.jpg')
+    img_resized.save(f'static/images/{key}_!_{name}.jpg')
+    return f'static/images/{key}_!_{name}.jpg'
    

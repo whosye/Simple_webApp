@@ -7,7 +7,7 @@ from datetime import datetime
 from functions import resizeImg
 import urllib.request
 import os 
-
+import re 
 
 
 app = Flask(__name__)
@@ -58,7 +58,7 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100),unique=True, nullable=False)
     date  = db.Column(db.Date, default=datetime.utcnow)
 
 
@@ -178,30 +178,59 @@ class UserAlter(Resource):
         img_db = Image(user_id= current_user.id, name=file.filename )
         db.session.add(img_db)
         db.session.commit()
-        key = img_db.id
+        key = current_user.id
         print(f" key {key}")
-        resizeImg(img=file, name=file.filename, key= key)
+        adress = resizeImg(img=file, name=file.filename, key= key)
 
-        return {'message' : 'ok'}
+        return {'message' : 'ok', 'image' :f'static/images/{adress}' }
 
     
 class SetAvatar(Resource):
     def get(self):
         try:
-            return {"current_avatar" : current_user.avatar}
+            return {"current_avatar" :current_user.avatar}
         except:
             return {'message': 'no'}
         
     def put(self):
-        
-        item= request.json
         current_user.id
-        imgs_list = ['static/default.png']
-        for img in os.listdir('images'):
-            imgs_list.append(f'images/{img}')
+        imgs_list = []
+        images = Image.query.filter_by(user_id=current_user.id).all()
+        for img in images:
+            
+            imgs_list.append(f'images/{current_user.id}_!_{img.name}')
+            
+        print(f"From DB = {imgs_list}")
+        print({'data' :imgs_list})
         return {'data' :imgs_list}
         
+class AlterIMGs(Resource):
+    
+    def put(self):
+        item= request.json
+        img_name_raw = item.get("user_avatar")
+        img_name_raw= img_name_raw[7:]
+        print(img_name_raw)
+        current_user.avatar = img_name_raw
+        db.session.commit()
         
+  
+        #current_user.avatar = item.get("delete_image")
+
+    def delete(self):
+        item= request.json
+        img_name_raw = item.get("delete_image")
+        pattern = '_!_(.+)$'
+        match = re.search(pattern, img_name_raw )
+        if match:
+            db_img = Image.query.filter_by(user_id=current_user.id, name=match.group(1)).one()
+            db.session.delete(db_img)
+            db.session.commit()
+        os.path.abspath('static')
+        os.remove(os.path.join(os.path.abspath('static'), f'{img_name_raw}'))
+        
+        print("Deleting", item.get("delete_image"))
+         
         
        
         
@@ -209,7 +238,7 @@ api.add_resource(UsersLogin,"/log")
 api.add_resource(UserRegister,"/new_user_reg")
 api.add_resource(UserAlter,'/alter')
 api.add_resource(SetAvatar,'/avatar')
-
+api.add_resource(AlterIMGs,'/alter_img')
 
 if __name__ == "__main__":
 

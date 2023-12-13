@@ -156,7 +156,17 @@ h1{
 }
 
 #showImages{
-    width: 300px;
-    height: 800px;
+    height: 600px;
     background-color:  blanchedalmond;
+}
+#showImages_grid{
+    display: grid;
+    grid-template-columns:auto auto auto;
+    gap: 10px;
+    align-items: center;
+
+}
+#show_images_close{
+    display: flex;
+    justify-content:baseline
 }

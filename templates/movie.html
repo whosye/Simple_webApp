@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Welcome, {{ user_data.username }}!</h1>
-
+    
     <div id="user_panel">
         <img id= "avatar" alt="User_Photo">
 
@@ -76,6 +76,7 @@
 
 
     <div id= "change4">
+
         <div id="change_grid">
             <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
             <div class="grid-item1"><input id="old_password"></div>
@@ -97,9 +98,11 @@
     </div>
 
     <div id="showImages">
-        <div class="grid-item1"><img id= "avatar" alt="User_Photo"> </div>
-        <div class="grid-item1"><button id="delete_photo">Delete</button></div>
-        <div class="grid-item1"><button id="choose_photo">Choose</button></div>
+        <div><button id="show_images_close">Exit</button></div>
+        <br>
+        <div id="showImages_grid">
+          
+        </div>
     </div>
 </body>
 
@@ -354,7 +357,12 @@
                     data = await response.json();
                     console.log(data.current_avatar);
                     if (data.current_avatar ==="default"){
-                        document.getElementById("avatar").src = 'static/default.png';
+                        document.getElementById("avatar").src = 'static/images/default.png';
+                    }else{
+                        console.log(data.current_avatar)
+                        console.log( "{{ url_for('static', filename='', _external=True) }}" + data.current_avatar)
+                        document.getElementById("avatar").src = "{{ url_for('static', filename='images/', _external=True) }}" + data.current_avatar;
+                      
                     }
                 }catch(error){
                     console.log(`Error ${error}`);
@@ -364,6 +372,55 @@
             document.getElementById("showImages").style.visibility= "hidden";
             document.getElementById("Uploaded_photo").addEventListener('click', showUploaded);
             
+            function displayImagesDyn(){
+
+                Change.style.visibility = 'hidden';
+                Change2.style.visibility = 'hidden';
+                Change3.style.visibility = 'hidden';
+                Change4.style.visibility = 'hidden';
+                const container = document.getElementById("showImages_grid");
+
+                while (container.firstChild) {
+                    container.removeChild(container.firstChild);
+                }
+                document.getElementById("showImages").style.visibility= "visible";
+                for (const key in data.data) {
+                    console.log(data.data[key])
+                    
+                    const divElement = document.createElement('div')
+                    const divElement1 = document.createElement('div')
+                    const divElement2 = document.createElement('div')
+                    const imageUrl = "{{ url_for('static', filename='', _external=True) }}" + data.data[key];
+                    console.log(imageUrl)
+                    const imgElement = document.createElement('img');
+                    const delImgElement =  document.createElement('button');
+                    const chooseImgElement =  document.createElement('button');
+                    delImgElement.id = `delete_${data.data[key]}`
+                    chooseImgElement.id = `choose_${data.data[key]}`
+                    delImgElement.innerText = "delete"
+                    chooseImgElement.innerText = "choose"
+                    delImgElement.addEventListener('click',()=>{
+                        console.log(`Deleting ${data.data[key]}`)
+                        imgActions('delete',data.data[key])
+                    })
+                    chooseImgElement.addEventListener('click',()=>{
+                        console.log(`Choosing ${data.data[key]}`)
+                        imgActions('choose',data.data[key])
+                    })
+                    divElement1.appendChild(delImgElement)
+                    divElement2.appendChild(chooseImgElement)
+                    imgElement.src = imageUrl;
+                    imgElement.alt = 'Image ' + key;
+                    divElement.class = "grid-item"
+                    divElement.appendChild(imgElement)
+                    container.appendChild(divElement) 
+                    container.appendChild(divElement1)
+                    container.appendChild(divElement2)    
+
+                    
+
+                }
+            }
             async function showUploaded(){
                 try{
                     let response = await fetch('/avatar',{
@@ -373,19 +430,50 @@
                     })
 
                     data = await response.json();
-
-                    const container = document.getElementById("showImages");
-                    for (const key in data.data) {
-                       console.log(key)
-                    }
-        
+                    displayImagesDyn(data)
                 }catch(error){
                     console.log(`error ${error}`)
                 }
             }
 
+            document.getElementById("show_images_close").addEventListener('click', ()=> {
+                document.getElementById("showImages").style.visibility= "hidden";
+                Modal.style.visibility = 'hidden';
+            });
+       
+            async function imgActions(action, item){
+                console.log(action, item)
+                if (action == "choose"){
+                    try{
+                        let response = await fetch('/alter_img',{
+                        method:"PUT",
+                        headers: {'Content-type' : 'application/json'}, 
+                        body: JSON.stringify({"user_avatar" : item})
+                    });
+                    
+                    location.reload();
+                    }catch(error){
+                        console.log(`error ${error}`)
+                    }
+                }else{
+                    try{
+                        let response = await fetch('/alter_img',{
+                            method:"delete",
+                            headers: {'Content-type' : 'application/json'}, 
+                            body: JSON.stringify({"delete_image" : item})
+                        });
+                        location.reload();
+                    }catch(error){
+                        console.log(`error ${error}`)
+                    }
+                }
+                
+            }
+
+
+
     });
-/*"{{ url_for('static', filename='default.png') }}"*/
+
 
 </script>
 </html>
