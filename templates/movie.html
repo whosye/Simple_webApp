@@ -10,11 +10,14 @@
 <body>
     <h1>Welcome, {{ user_data.username }}!</h1>
     
+    <div><label for="user_panel", id="main_lab"> Main Settings</label></div>
     <div id="user_panel">
+       
         <img id= "avatar" alt="User_Photo">
 
             <button id="log_out">Log out</button>
             <button id="settings"></button>
+            <button id="addMovie"></button>
     </div>
     <br>
 
@@ -104,10 +107,35 @@
           
         </div>
     </div>
+
+    <div id="addMovie_panel">
+        <div id="addMovie_grid">
+        <div><label for="movie_name">Movie Name: </label></div>
+        <div><input id="movie_name"></div>
+        <div><label for="movie_year">Year: </label></div>
+        <div><input id="movie_year"></div>
+        <div><label for="movie_image">Img: </label></div>
+        <div><input type=file id="movie_image"></div>
+        <div><button id="cancel_addMovie_panel">Cancel</button></div>
+        <div><button id="insert_new_movie">Submit</button></div>
+        <div><span id="adding_movie_error"></span> </div>
+
+
+        </div>
+
+       
+    </div>
+
 </body>
 
 <script>
+
+
+    
     document.addEventListener("DOMContentLoaded", function() {
+
+
+
         document.getElementById("log_out").addEventListener("click", LogOut);
 
         async function LogOut(){
@@ -206,10 +234,11 @@
         const new_nick = document.getElementById('Submit_new_nick');
 
 
-        new_email.addEventListener("click", () => sendNew('newEmail', document.getElementById('new_email').value));
-        new_nick.addEventListener("click",  () => sendNew('newNick',   document.getElementById('new_nick').value));
-
+        new_email.addEventListener("click", () =>  sendNew('newEmail', document.getElementById('new_email').value));
+        new_nick.addEventListener("click",  () =>  sendNew('newNick',   document.getElementById('new_nick').value));
+        let emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         async function  sendNew(type, item){
+            
             try{
                 let response = await fetch('/alter', { 
                     method: "PUT",
@@ -222,6 +251,9 @@
                     if (data.message=="ok"){
                         document.getElementById("Email_Result").innerText = "Succesfuly changed, refresh";
                         document.getElementById("Email_Result").style.backgroundColor= "green";
+                    }else{
+                        document.getElementById("Email_Result").innerText = "Wrong email format or taken, refresh";
+                        document.getElementById("Email_Result").style.backgroundColor= "red";
                     }
                 }
            
@@ -464,16 +496,83 @@
                         });
                         location.reload();
                     }catch(error){
-                        console.log(`error ${error}`)
+                        console.log(`error ${error}`);
                     }
                 }
-                
+            }
+            /* Part for inserting movies */
+
+            
+            const MovieAdd_panel = document.getElementById('addMovie_panel');
+            MovieAdd_panel.style.visibility = "hidden";
+            document.getElementById('addMovie').addEventListener('click', ()=>{
+                MovieAdd_panel.style.visibility = 'visible';
+            });
+
+            const cancel_movieAdd_panel =  document.getElementById('cancel_addMovie_panel');
+            cancel_movieAdd_panel.addEventListener('click', ()=>{
+                MovieAdd_panel.style.visibility = "hidden";
+            });
+          
+
+            document.getElementById('insert_new_movie').addEventListener('click', sendMovie_check);
+            const Error_movie_span = document.getElementById('adding_movie_error');
+            function sendMovie_check(){
+                let movie_name = document.getElementById('movie_name').value
+                let movie_year = document.getElementById('movie_year').value
+                let movie_image = document.getElementById('movie_image').files[0];
+
+                if ((movie_name == "")){
+                    console.log("movie_name ", movie_name)
+                    Error_movie_span.innerText = "Empty movie name";
+                    Error_movie_span.style.backgroundColor = 'red';
+                    return
+                }else if( (!Number.isInteger(parseInt(movie_year, 10))) ||  (movie_year="")){
+                    console.log("is not integer ", movie_year)
+                    Error_movie_span.innerText = "Empty movie year or not integer";
+                    Error_movie_span.style.backgroundColor = 'red';
+                    return
+                }else{
+                    addMovieAPI(movie_name, movie_year, movie_image)
+                }
+                Error_movie_span.innerText = "";
+            }
+
+              
+            async function addMovieAPI(name, year, img){
+                try{
+
+                    let formData = new FormData();
+                    formData.append('movie_name', name);
+                    formData.append('movie_year', year);
+                    formData.append('movie_image', img);
+                    let response = await fetch('/add_movie',{
+                        method: 'POST',
+                        body: formData                            
+                    });
+
+                    data = await response.json(); 
+                    if (data.message != "no"){
+                        Error_movie_span.innerText = "Succes";
+                        Error_movie_span.style.backgroungColor = 'green';
+                            setTimeout( function(){
+                                location.reload();
+                            }, 1000);
+                      
+                    }else{
+                        Error_movie_span.innerText = "Problem with adding movie";
+                        Error_movie_span.style.backgroundColor = 'red';
+                    }
+
+
+                }catch(error){
+                    console.log(`ERROR: ${error}`)
+                }
             }
 
 
 
     });
-
-
+    
 </script>
 </html>

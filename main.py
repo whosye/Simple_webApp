@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager,  login_user, login_required, current_user, logout_user, UserMixin
 from datetime import datetime
-from functions import resizeImg
+from functions import resizeImg, resizeMovieImg
 import urllib.request
 import os 
 import re 
@@ -40,7 +40,7 @@ class Moviestack(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     movieName = db.Column(db.String(10), unique=True, nullable=False)
-    year = db.Column(db.Integer, db.CheckConstraint('year >= 1800 AND year <= 3000'))
+    year = db.Column(db.Integer)
     addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
     date = db.Column(db.Date, default=datetime.utcnow)
     comments = db.relationship('Comments', backref='moviestack', lazy=True)
@@ -58,10 +58,16 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    name = db.Column(db.String(100),unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     date  = db.Column(db.Date, default=datetime.utcnow)
 
+class MovieImage(db.Model):
+    __tablename__ = 'movie_images'
 
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer, db.ForeignKey('moviestack.id'))
+    name = db.Column(db.String(100), nullable=False)
+    date  = db.Column(db.Date, default=datetime.utcnow)
 
 
 
@@ -102,7 +108,7 @@ class UsersLogin(Resource):
             response_message = "ok"
             return {"message": response_message}, 201
         else:
-            response_message = "nol"
+            response_message = "no"
             return {"message": response_message}, 201
     def put(self):
         item = request.json
@@ -146,7 +152,12 @@ class UserAlter(Resource):
         
             if item.get('newEmail'):
                 new = item.get('newEmail')
-                current_user.email = new
+                email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+                match = re.match(email_pattern, new)
+                if match:
+                    current_user.email = new
+                else:
+                    return {"message" : "error"}
             elif item.get('oldPassword'):
                 print(f"current password {current_user.password}")
                 
@@ -181,8 +192,10 @@ class UserAlter(Resource):
         key = current_user.id
         print(f" key {key}")
         adress = resizeImg(img=file, name=file.filename, key= key)
-
+        print(f"AdRESS {adress}")
+     
         return {'message' : 'ok', 'image' :f'static/images/{adress}' }
+
 
     
 class SetAvatar(Resource):
@@ -230,6 +243,38 @@ class AlterIMGs(Resource):
         os.remove(os.path.join(os.path.abspath('static'), f'{img_name_raw}'))
         
         print("Deleting", item.get("delete_image"))
+        
+class InsertMovie(Resource):
+    def post(self):
+        
+            movie_name = request.form.get('movie_name')
+            movie_year = request.form.get('movie_year')
+            movie_img = request.files.get('movie_image')
+            print("user id ", current_user.id, " movie name ", movie_img.filename)
+                
+                
+            id = db.Column(db.Integer, primary_key=True)
+            movieName = db.Column(db.String(10), unique=True, nullable=False)
+            year = db.Column(db.Integer, db.CheckConstraint('year >= 1800 AND year <= 3000'))
+            addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
+            date = db.Column(db.Date, default=datetime.utcnow)
+            comments = db.relationship('Comments', backref='moviestack', lazy=True)
+                
+            newMovie = Moviestack(movieName= movie_name, year=movie_year, addedBy=current_user.id)
+            db.session.add(newMovie)
+            db.session.commit()
+            movie_id = Moviestack.query.filter_by(movieName= movie_name, year=movie_year).first()
+            
+            img_db = MovieImage(movie_id= movie_id, name=movie_img.filename )
+            db.session.add(img_db)
+            db.session.commit()
+            
+            
+            img_db_key =  MovieImage.query.filter_by(movie_id= movie_id, name=movie_img.filename).first()
+            resizeMovieImg(img= movie_img, key=  img_db_key , name=movie_img.filename)
+            print(  movie_name , movie_year, movie_img.filename )
+            return{'message' : 'ok'}
+
          
         
        
@@ -239,7 +284,7 @@ api.add_resource(UserRegister,"/new_user_reg")
 api.add_resource(UserAlter,'/alter')
 api.add_resource(SetAvatar,'/avatar')
 api.add_resource(AlterIMGs,'/alter_img')
-
+api.add_resource(InsertMovie,'/add_movie')
 if __name__ == "__main__":
 
     app.run(host="0.0.0.0", port=5000, debug=True)

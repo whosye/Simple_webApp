@@ -6,6 +6,16 @@ body{
 h1{
     position: relative;
     text-align: center;
+    font-size:50px;
+}
+#main_lab{
+    margin-top: 10px;
+    position: absolute;
+    left: 210px;
+    top:40px;
+    font: 'Arial', sans-serif;
+    font-size:30px;
+    font-weight: bold;
 }
 #user_panel{
     
@@ -16,7 +26,7 @@ h1{
     justify-content: center;
     align-items: center;
     background-color: blanchedalmond;
-    width:400px;
+    width:500px;
     height: 200px;
     border-radius: 20px;
     border-width: 10px;
@@ -29,7 +39,7 @@ h1{
     width: 104px;
     height: 104px;
     font: 'Arial', sans-serif;
-    font-size: large;
+    font-size: 30px;
     border-width: 2px;
     border-style: solid;
     border-color: rgb(9, 9, 9);
@@ -41,12 +51,43 @@ h1{
     background-image: url('../static/settings_img.jpg');
     background-position: center; 
 }
+
+#addMovie{
+    width: 104px;
+    height: 104px;
+    background-image: url('../static/add_movie.jpg');
+    background-position: center; 
+}
+#addMovie_panel{
+    background-color:  blanchedalmond;
+    width:400px;
+    height:200px;
+    margin-left: 30px;
+    border-radius: 20px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: rgb(9, 9, 9);
+
+}
+#addMovie_grid{
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: auto auto ;
+    position: absolute;
+    margin-left: 30px;
+    gap: 10px;
+    text-align: left;
+
+}
 #avatar{
     border-width: 2px;
     border-style: solid;
     border-color: rgb(9, 9, 9);
+    width: 100px; /* Adjust as needed */
+    height: 100px;
 }
 #settings_panel{
+    position: absolute;
     margin-left: 30px;
     text-align: left;
     width:400px;
@@ -169,4 +210,10 @@ h1{
 #show_images_close{
     display: flex;
     justify-content:baseline
+}
+
+#adding_movie_error{
+    position: absolute;
+
+
 }

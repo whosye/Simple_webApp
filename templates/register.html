@@ -39,6 +39,7 @@
 
 </body>
 <script>
+    let emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const ButtonReg = document.getElementById("button_red")
     let password1 = document.getElementById("password_reg_form1")
     let password2 = document.getElementById("password_reg_form2")
@@ -88,6 +89,11 @@
         const userEmail = document.getElementById('email_reg_form').value;
         const userPassword = password2.value;
         document.getElementById('userPassword')
+        if (!emailRegEx.test(userEmail)){
+            document.getElementById("Email_allert").style.visibility = 'visible';
+            document.getElementById("Email_allert").innerHTML = "Invalid email format.";
+            return;
+        }
         try{
         let response = await fetch(`/new_user_reg`, {
                         method: `POST`,
