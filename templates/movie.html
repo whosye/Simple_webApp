@@ -8,237 +8,257 @@
 
 </head>
 <body>
-    <h1>Welcome, {{ user_data.username }}!</h1>
     
-    <div><label for="user_panel", id="main_lab"> Main Settings</label></div>
-    <div id="user_panel">
-       
-        <img id= "avatar" alt="User_Photo">
-
-            <button id="log_out">Log out</button>
-            <button id="settings"></button>
-            <button id="addMovie"></button>
-    </div>
-    <br>
-
-
-    <div id="settings_panel">
-        <div class="grid-item"id="grid-item-1">Email: </div>
-        <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
-        <div class="grid-item"id="grid-item-3"><button id="grid_button1" >Change</button></div>
-        <div class="grid-item"id="grid-item-4">Nick: </div>
-        <div class="grid-item"id="grid-item-5">{{user_data.username}}</div>
-        <div class="grid-item"id="grid-item-6"><button id="grid_button2" >Change</button></div>
-        <div class="grid-item"id="grid-item-7">Photo: </div>
-        <div class="grid-item"id="grid-item-8"><button id="grid_button3" >Change</button></div>
-        <div class="grid-item"id="grid-item-9"></div>
-        <div class="grid-item"id="grid-item-10">Password: </div>
-        <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
-    </div>
     
-
-    <div id="modal">
-    </div>
-
-    <div id= "change">
-        <div id="change_grid">
-            <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
-            <div class="grid-item1"><input id="new_email" type="email"></div>
-            <div class="grid-item1"><button id="Submit_new_email">Submit</button></div>
-            <div class="grid-item1"><button id="Cancel_change1">Cancel</button></div>
-        </div>
-     
-        <div>
-            <p id="Email_Result"></p>
-        </div>
-    </div>
-
-    <div id= "change2">
-        <div id="change_grid">
-            <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
-            <div class="grid-item1"><input id="new_nick"></div>
-            <div class="grid-item1"><button id="Submit_new_nick">Submit</button></div>
-            <div class="grid-item1"><button id="Cancel_change2">Cancel</button></div>
-        </div>
-     
-    </div>
-
-    <div id= "change3">
-        <form id="uploadForm" enctype="multipart/form-data">
-        <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
-            <div class="grid-item1"><input type=file id="fileInput"></div>
-            <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
-            <div class="grid-item1"><button id="Submit_photo">Submit</button></div>
-        </form>
-            <div class="grid-item1"><button id="Uploaded_photo">Show Uploaded</button></div>
-
-        <div>
-            <p id="Photo_Result"></p>
-        </div>
-    </div>
-
-
-    <div id= "change4">
-
-        <div id="change_grid">
-            <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
-            <div class="grid-item1"><input id="old_password"></div>
-
-            <div class="grid-item1"><label for="new_password" id="new_password_id">New password</label></div>
-            <div class="grid-item1"><input id="new_password"></div>
-
-            <div class="grid-item1"><label for="confirm_password" id="confirm_password_id">Confirm password</label></div>
-            <div class="grid-item1"><input id="confirm_password"></div>
+    <div>
 
         </div>
-     
-        <div id="change_grid4_add">
-            <button id="Submit_new_password">Submit</button>
-            <button id="Cancel_change4">Cancel</button>
-           
-        </div>
-        <div><p id="password_Result"></p> </div>
-    </div>
+        <div><span id="main_lab"> Main Settings</span></div>
+            <div id="user_panel">
+            
+                <img id= "avatar" alt="User_Photo">
 
-    <div id="showImages">
-        <div><button id="show_images_close">Exit</button></div>
+                    <button id="log_out">Log out</button>
+                    <button id="settings"></button>
+                    <button id="addMovie"></button>
+
+            </div>
         <br>
-        <div id="showImages_grid">
-          
+
+
+        <div id="settings_panel">
+            <div class="grid-item"id="grid-item-1">Email: </div>
+            <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
+            <div class="grid-item"id="grid-item-3"><button id="grid_button1" >Change</button></div>
+            <div class="grid-item"id="grid-item-4">Nick: </div>
+            <div class="grid-item"id="grid-item-5">{{user_data.username}}</div>
+            <div class="grid-item"id="grid-item-6"><button id="grid_button2" >Change</button></div>
+            <div class="grid-item"id="grid-item-7">Photo: </div>
+            <div class="grid-item"id="grid-item-8"><button id="grid_button3" >Change</button></div>
+            <div class="grid-item"id="grid-item-9"></div>
+            <div class="grid-item"id="grid-item-10">Password: </div>
+            <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
+        </div>
+        
+
+        <div id="modal">
+        </div>
+
+        <div id= "change">
+            <div id="change_grid">
+                <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
+                <div class="grid-item1"><input id="new_email" type="email"></div>
+                <div class="grid-item1"><button id="Submit_new_email">Submit</button></div>
+                <div class="grid-item1"><button id="Cancel_change1">Cancel</button></div>
+            </div>
+        
+            <div>
+                <p id="Email_Result"></p>
+            </div>
+        </div>
+
+        <div id= "change2">
+            <div id="change_grid">
+                <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
+                <div class="grid-item1"><input id="new_nick"></div>
+                <div class="grid-item1"><button id="Submit_new_nick">Submit</button></div>
+                <div class="grid-item1"><button id="Cancel_change2">Cancel</button></div>
+            </div>
+        
+        </div>
+
+        <div id= "change3">
+            <form id="uploadForm" enctype="multipart/form-data">
+            <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
+                <div class="grid-item1"><input type=file id="fileInput"></div>
+                <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
+                <div class="grid-item1"><button id="Submit_photo">Submit</button></div>
+            </form>
+                <div class="grid-item1"><button id="Uploaded_photo">Show Uploaded</button></div>
+
+            <div>
+                <p id="Photo_Result"></p>
+            </div>
+        </div>
+
+
+        <div id= "change4">
+
+            <div id="change_grid">
+                <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
+                <div class="grid-item1"><input id="old_password"></div>
+
+                <div class="grid-item1"><label for="new_password" id="new_password_id">New password</label></div>
+                <div class="grid-item1"><input id="new_password"></div>
+
+                <div class="grid-item1"><label for="confirm_password" id="confirm_password_id">Confirm password</label></div>
+                <div class="grid-item1"><input id="confirm_password"></div>
+
+            </div>
+        
+            <div id="change_grid4_add">
+                <button id="Submit_new_password">Submit</button>
+                <button id="Cancel_change4">Cancel</button>
+            
+            </div>
+            <div><p id="password_Result"></p> </div>
+        </div>
+
+        <div id="showImages">
+            <div><button id="show_images_close">Exit</button></div>
+            <br>
+            <div id="showImages_grid">
+            
+            </div>
+        </div>
+
+        <div id="addMovie_panel">
+            <div id="addMovie_grid">
+            <div><label for="movie_name">Movie Name: </label></div>
+            <div><input id="movie_name"></div>
+            <div><label for="movie_year">Year: </label></div>
+            <div><input id="movie_year"></div>
+            <div><label for="movie_image">Img: </label></div>
+            <div><input type=file id="movie_image"></div>
+            <div><button id="cancel_addMovie_panel">Cancel</button></div>
+            <div><button id="insert_new_movie">Submit</button></div>
+            <div><span id="adding_movie_error"></span> </div>
+
+
+            </div>
+
+        
+        </div>
+
+        <div id="show_panel">
+            <h1>Welcome, {{ user_data.username }}!</h1>
+            <div id="show_panel_in">
+                <label for="search_movie" id="search_movie_label">Search</label>
+                <input id="search_movie">
+                <button id="search_movie_button"></button>
+            </div>
+
+        </div>
+
+        <div id="show_movies">
+
         </div>
     </div>
-
-    <div id="addMovie_panel">
-        <div id="addMovie_grid">
-        <div><label for="movie_name">Movie Name: </label></div>
-        <div><input id="movie_name"></div>
-        <div><label for="movie_year">Year: </label></div>
-        <div><input id="movie_year"></div>
-        <div><label for="movie_image">Img: </label></div>
-        <div><input type=file id="movie_image"></div>
-        <div><button id="cancel_addMovie_panel">Cancel</button></div>
-        <div><button id="insert_new_movie">Submit</button></div>
-        <div><span id="adding_movie_error"></span> </div>
-
-
-        </div>
-
-       
-    </div>
-
 </body>
 
 <script>
 
 
     
-    document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", async function() {
 
 
 
-        document.getElementById("log_out").addEventListener("click", LogOut);
+            document.getElementById("log_out").addEventListener("click", LogOut);
 
-        async function LogOut(){
+            async function LogOut(){
 
-            try{
-                let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
-                if (response.ok){
-                    console.log("response.ok")
-                    let data = await response.json();
-                    if (data.message == "succes"){
-                        window.location.href = "/"
+                try{
+                    let response = await fetch('/log', {method: `PUT`,headers:{'Content-Type': 'application/json'}, body: JSON.stringify({"message" : "logOut"}) });
+                    if (response.ok){
+                        console.log("response.ok")
+                        let data = await response.json();
+                        if (data.message == "succes"){
+                            window.location.href = "/"
+                        }
                     }
                 }
-            }
-            catch(error){
-                console.log(`error occured ${error}`);
-            }
-        }
-
-        const Settings_panel = document.getElementById("settings_panel")
-        Settings_panel.style.visibility = 'hidden';
-        document.getElementById("settings").addEventListener("click", ()=>{
-            if (Settings_panel.style.visibility === 'hidden'){
-                Settings_panel.style.visibility = 'visible'
-            }else{
-                Settings_panel.style.visibility = 'hidden'
-            }
-        
-            });
-
-        document.getElementById("grid_button1").addEventListener("click", ()=> dimm('email'));
-        document.getElementById("grid_button2").addEventListener("click", ()=> dimm('nick'));
-        document.getElementById("grid_button3").addEventListener("click", ()=> dimm('photo'));
-        document.getElementById("grid_button4").addEventListener("click", ()=> dimm('password'));
-
-
-        const Modal = document.getElementById("modal");
-        const Change = document.getElementById("change");
-        const Change2 = document.getElementById("change2");
-        const Change3 = document.getElementById("change3");
-        const Change4 = document.getElementById("change4");
-        Modal.style.visibility = 'hidden';
-        Change.style.visibility = 'hidden';
-        Change2.style.visibility = 'hidden';
-        Change3.style.visibility = 'hidden';
-        Change4.style.visibility = 'hidden';
-        function dimm(invoke){
-            if ( Modal.style.visibility === 'hidden'){
-                Modal.style.visibility = 'visible';
-                if (invoke == 'email'){
-                    Change.style.visibility = 'visible';
-                }else if (invoke =='photo'){
-                    Change3.style.visibility = 'visible';
+                catch(error){
+                    console.log(`error occured ${error}`);
                 }
-                else if(invoke =='password'){
-                    Change4.style.visibility = 'visible';
-                }
-                else{
-                    Change2.style.visibility = 'visible';
-                }
-                
-            }else{
-                Modal.style.visibility = 'hidden';
-                Change.style.visibility = 'hidden';
-                Change2.style.visibility = 'hidden';
-                Change3.style.visibility = 'hidden';
-                Change4.style.visibility = 'hidden';
-
             }
-        }
 
-        document.getElementById("Cancel_change1").addEventListener("click", () => Cancel('cancel1'));
-        document.getElementById("Cancel_change2").addEventListener("click", () => Cancel('cancel2'));
-        document.getElementById("Cancel_change3").addEventListener("click", () => Cancel('cancel3'));
-        document.getElementById("Cancel_change4").addEventListener("click", () => Cancel('cancel4'));
+            const Settings_panel = document.getElementById("settings_panel")
+            Settings_panel.style.visibility = 'hidden';
+            document.getElementById("settings").addEventListener("click", ()=>{
+                if (Settings_panel.style.visibility === 'hidden'){
+                    Settings_panel.style.visibility = 'visible'
+                }else{
+                    Settings_panel.style.visibility = 'hidden'
+                }
+                if (MovieAdd_panel.style.visibility == 'visible'){
+                        MovieAdd_panel.style.visibility = 'hidden';
+                    }
+                });
 
-        function Cancel(invoke) {
+            document.getElementById("grid_button1").addEventListener("click", ()=> dimm('email'));
+            document.getElementById("grid_button2").addEventListener("click", ()=> dimm('nick'));
+            document.getElementById("grid_button3").addEventListener("click", ()=> dimm('photo'));
+            document.getElementById("grid_button4").addEventListener("click", ()=> dimm('password'));
+
+
+            const Modal = document.getElementById("modal");
+            const Change = document.getElementById("change");
+            const Change2 = document.getElementById("change2");
+            const Change3 = document.getElementById("change3");
+            const Change4 = document.getElementById("change4");
             Modal.style.visibility = 'hidden';
-            console.log(invoke)
-            console.log("hiding")
-            if (invoke == "cancel1"){
-                Change.style.visibility = 'hidden';
-            }else if (invoke == "cancel2"){
-                Change2.style.visibility = 'hidden';
-            }else if (invoke == "cancel3"){
-                Change3.style.visibility = 'hidden';
-            }else if (invoke == "cancel4"){
-                Change4.style.visibility = 'hidden';
-            }else{
+            Change.style.visibility = 'hidden';
+            Change2.style.visibility = 'hidden';
+            Change3.style.visibility = 'hidden';
+            Change4.style.visibility = 'hidden';
+            function dimm(invoke){
+                if ( Modal.style.visibility === 'hidden'){
+                    Modal.style.visibility = 'visible';
+                    if (invoke == 'email'){
+                        Change.style.visibility = 'visible';
+                    }else if (invoke =='photo'){
+                        Change3.style.visibility = 'visible';
+                    }
+                    else if(invoke =='password'){
+                        Change4.style.visibility = 'visible';
+                    }
+                    else{
+                        Change2.style.visibility = 'visible';
+                    }
+                    
+                }else{
+                    Modal.style.visibility = 'hidden';
+                    Change.style.visibility = 'hidden';
+                    Change2.style.visibility = 'hidden';
+                    Change3.style.visibility = 'hidden';
+                    Change4.style.visibility = 'hidden';
 
+                }
             }
-        }
+
+            document.getElementById("Cancel_change1").addEventListener("click", () => Cancel('cancel1'));
+            document.getElementById("Cancel_change2").addEventListener("click", () => Cancel('cancel2'));
+            document.getElementById("Cancel_change3").addEventListener("click", () => Cancel('cancel3'));
+            document.getElementById("Cancel_change4").addEventListener("click", () => Cancel('cancel4'));
+
+            function Cancel(invoke) {
+                Modal.style.visibility = 'hidden';
+                console.log(invoke)
+                console.log("hiding")
+                if (invoke == "cancel1"){
+                    Change.style.visibility = 'hidden';
+                }else if (invoke == "cancel2"){
+                    Change2.style.visibility = 'hidden';
+                }else if (invoke == "cancel3"){
+                    Change3.style.visibility = 'hidden';
+                }else if (invoke == "cancel4"){
+                    Change4.style.visibility = 'hidden';
+                }else{
+
+                }
+            }
 
 
-        const new_email = document.getElementById("Submit_new_email");
-        const new_nick = document.getElementById('Submit_new_nick');
+            const new_email = document.getElementById("Submit_new_email");
+            const new_nick = document.getElementById('Submit_new_nick');
 
 
-        new_email.addEventListener("click", () =>  sendNew('newEmail', document.getElementById('new_email').value));
-        new_nick.addEventListener("click",  () =>  sendNew('newNick',   document.getElementById('new_nick').value));
-        let emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        async function  sendNew(type, item){
-            
+            new_email.addEventListener("click", () =>  sendNew('newEmail', document.getElementById('new_email').value));
+            new_nick.addEventListener("click",  () =>  sendNew('newNick',   document.getElementById('new_nick').value));
+            let emailRegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            async function  sendNew(type, item){
+                
             try{
                 let response = await fetch('/alter', { 
                     method: "PUT",
@@ -506,7 +526,17 @@
             const MovieAdd_panel = document.getElementById('addMovie_panel');
             MovieAdd_panel.style.visibility = "hidden";
             document.getElementById('addMovie').addEventListener('click', ()=>{
-                MovieAdd_panel.style.visibility = 'visible';
+                if(MovieAdd_panel.style.visibility == 'visible'){
+                    MovieAdd_panel.style.visibility ="hidden";
+                }else{
+                    MovieAdd_panel.style.visibility = 'visible';
+                }
+
+                if (Settings_panel.style.visibility == 'visible'){
+                    Settings_panel.style.visibility = 'hidden';
+                }
+
+
             });
 
             const cancel_movieAdd_panel =  document.getElementById('cancel_addMovie_panel');
@@ -527,12 +557,13 @@
                     Error_movie_span.innerText = "Empty movie name";
                     Error_movie_span.style.backgroundColor = 'red';
                     return
-                }else if( (!Number.isInteger(parseInt(movie_year, 10))) ||  (movie_year="")){
+                }else if( (!Number.isInteger(parseInt(movie_year, 10))) ||  (movie_year=="")){
                     console.log("is not integer ", movie_year)
                     Error_movie_span.innerText = "Empty movie year or not integer";
                     Error_movie_span.style.backgroundColor = 'red';
                     return
                 }else{
+                    console.log(`Fetching ${movie_year}`)
                     addMovieAPI(movie_name, movie_year, movie_image)
                 }
                 Error_movie_span.innerText = "";
@@ -570,9 +601,39 @@
                 }
             }
 
+            window.addEventListener('load', movie);
 
 
-    });
+            async function movie(){
+                try{
+                    let response = await fetch('/add_movie',{
+                        method: "GET",
+                        headers: {'Content-type' : 'application/json'}, 
+                    })
+                    data = await response.json();
+                    showData(data)
+                }catch(error){
+                    console.log(`Error ${error}`);
+                }
+            }
+
+            function showData(data){
+               
+                for (const key in data){
+
+                    console.log(`NAME: ${data[key]['movieName']}`)
+                    console.log(`YEAR: ${data[key]['year']}`)
+                    const divElement = document.createElement('div')
+                    const divElement2 = document.createElement('div')
+                    const name = document.createElement('span')
+                    const year = document.createElement('span')
+                 
+                }
+
+            }
+
+
+        });
     
 </script>
 </html>

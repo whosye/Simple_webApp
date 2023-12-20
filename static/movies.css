@@ -9,10 +9,10 @@ h1{
     font-size:50px;
 }
 #main_lab{
-    margin-top: 10px;
+   
     position: absolute;
     left: 210px;
-    top:40px;
+    top:30px;
     font: 'Arial', sans-serif;
     font-size:30px;
     font-weight: bold;
@@ -145,7 +145,8 @@ h1{
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-  
+    z-index: 5;
+
 }
 #change, #change2, #change3,#change4, #showImages{
     position: fixed;
@@ -159,7 +160,12 @@ h1{
     width: 500px;
     height: 300px;
     background-color:  blanchedalmond;
-
+    z-index: 10;
+    border-top: 10px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: rgb(9, 9, 9);
+    border-radius: 20px;
 }
 
 
@@ -214,6 +220,50 @@ h1{
 
 #adding_movie_error{
     position: absolute;
+}
+
+#show_panel{
+    position: fixed;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    background-color: blanchedalmond;
+    padding: 20px; /* Adjust the padding as needed */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
+    width:1000px;
+    overflow-y: auto;
+    height: 100vh;
+    border-top: 100px solid black;
+
+}
+#show_panel_in{
+    display: flex;
+    justify-content: center;
+    background-color: grey;
+    border-bottom: 10px;
+    border-bottom: solid black;
+
+}
+    
+#search_movie_button{
+    background-image: url('../static/lupa_small2.jpg');
+    width: 50px;
+    height: 50px;
+}
+
+#search_movie{
+    width: 100px;
+    height: 45px;
+}
+
+#search_movie_label{
+    width: 80px;
+    height: 50px;
+    background-color: chocolate;
+    text-align:center;
+    text-decoration: solid;
+    text-transform: uppercase;
+    line-height: 50px
 
 
 }
