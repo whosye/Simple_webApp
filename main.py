@@ -43,6 +43,7 @@ class Moviestack(db.Model):
     year = db.Column(db.Integer)
     addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
     date = db.Column(db.Date, default=datetime.utcnow)
+    description = db.Column(db.String(100))
     comments = db.relationship('Comments', backref='moviestack', lazy=True)
 
 class Comments(db.Model):
@@ -52,7 +53,7 @@ class Comments(db.Model):
     author = db.Column(db.String(10),db.ForeignKey("user.id") )
     Movie = db.Column(db.String(10), db.ForeignKey("moviestack.id"))
     date  = db.Column(db.Date, default=datetime.utcnow)
-
+    
 class Image(db.Model):
     __tablename__ = 'images'
 
@@ -246,14 +247,16 @@ class AlterIMGs(Resource):
         
 class InsertMovie(Resource):
     def get(self):
-        print("DOPICICICICICIC")
         movies = Moviestack.query.all()
         jsonList=[]
         for movie in movies:
-            #movie_im = MovieImage.query.filter_by(movie_id = movie.id)
+            movie_im = MovieImage.query.filter_by(movie_id = movie.id).one()
             jsonList.append({
                 "movieName" : movie.movieName,
-                "year" : movie.year
+                "year" : movie.year,
+                'description' : movie.description,
+                'movie_img' : f"{movie.id}_!_{movie_im.name}"
+
             })
         return jsonify(jsonList)
 
@@ -263,11 +266,12 @@ class InsertMovie(Resource):
             movie_name = request.form.get('movie_name')
             movie_year = request.form.get('movie_year')
             movie_img = request.files.get('movie_image')
-            print("user id ", current_user.id, " movie name ", movie_img.filename)
+            movie_desc = request.form.get('movie_description')
+            print("user id ", current_user.id, " movie name ", movie_img.filename, 'desc',movie_desc  )
                 
 
                 
-            newMovie = Moviestack(movieName= movie_name, year=movie_year, addedBy=current_user.id)
+            newMovie = Moviestack(movieName= movie_name, year=movie_year, addedBy=current_user.id, description= movie_desc )
             db.session.add(newMovie)
             db.session.commit()
 

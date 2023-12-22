@@ -3,6 +3,10 @@ body{
     font-family: 'Arial', sans-serif;
 }
 
+#container{
+    min-width: 1500px; 
+}
+
 h1{
     position: relative;
     text-align: center;
@@ -61,7 +65,7 @@ h1{
 #addMovie_panel{
     background-color:  blanchedalmond;
     width:400px;
-    height:200px;
+    height:400px;
     margin-left: 30px;
     border-radius: 20px;
     border-width: 10px;
@@ -225,11 +229,11 @@ h1{
 #show_panel{
     position: fixed;
     top: 50%;
-    left: 60%;
+    left: calc(60% + 50px);
     transform: translate(-50%, -50%);
     background-color: blanchedalmond;
-    padding: 20px; /* Adjust the padding as needed */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
+    padding: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
     width:1000px;
     overflow-y: auto;
     height: 100vh;
@@ -265,5 +269,40 @@ h1{
     text-transform: uppercase;
     line-height: 50px
 
+
+}
+#movie_description{
+    padding: 5px;
+}
+.additional-text{
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+}
+#show_your_movies_button{
+    grid-column: 1 / 3;
+    grid-row: 6 / 6;
+}
+#show_all_movie_button{
+    width: 50px;
+}
+#show_movies{
+
+}
+.innerMain{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 250px 100px;
+    gap: 25px; 
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(9, 9, 9);
+    
+   
+}
+
+.movie_container{
+    display: grid;
+    justify-content: center;
+    grid-template-columns:auto;
 
 }

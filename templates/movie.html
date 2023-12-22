@@ -10,17 +10,16 @@
 <body>
     
     
-    <div>
+    <div id="container">
 
-        </div>
+       
         <div><span id="main_lab"> Main Settings</span></div>
             <div id="user_panel">
             
                 <img id= "avatar" alt="User_Photo">
-
-                    <button id="log_out">Log out</button>
-                    <button id="settings"></button>
-                    <button id="addMovie"></button>
+                <button id="log_out">Log out</button>
+                <button id="settings"></button>
+                <button id="addMovie"></button>
 
             </div>
         <br>
@@ -120,10 +119,12 @@
             <div><input id="movie_year"></div>
             <div><label for="movie_image">Img: </label></div>
             <div><input type=file id="movie_image"></div>
+            <div><label for="movie_description">Description: </label></div>
+            <div><textarea rows="6" cols="25" id="movie_description"></textarea></div>
             <div><button id="cancel_addMovie_panel">Cancel</button></div>
             <div><button id="insert_new_movie">Submit</button></div>
             <div><span id="adding_movie_error"></span> </div>
-
+            <button id="show_your_movies_button">Show Created</button>
 
             </div>
 
@@ -136,13 +137,20 @@
                 <label for="search_movie" id="search_movie_label">Search</label>
                 <input id="search_movie">
                 <button id="search_movie_button"></button>
+                <button id="show_all_movie_button">show All</button>
+            </div>
+            <br>
+
+            <div id="show_movies">
+                
+
             </div>
 
         </div>
 
-        <div id="show_movies">
 
-        </div>
+
+
     </div>
 </body>
 
@@ -551,7 +559,8 @@
                 let movie_name = document.getElementById('movie_name').value
                 let movie_year = document.getElementById('movie_year').value
                 let movie_image = document.getElementById('movie_image').files[0];
-
+                let movie_description = document.getElementById('movie_description').value
+                console.log(`Description is ${movie_description}`)
                 if ((movie_name == "")){
                     console.log("movie_name ", movie_name)
                     Error_movie_span.innerText = "Empty movie name";
@@ -564,19 +573,21 @@
                     return
                 }else{
                     console.log(`Fetching ${movie_year}`)
-                    addMovieAPI(movie_name, movie_year, movie_image)
+                    addMovieAPI(movie_name, movie_year, movie_image,movie_description)
                 }
                 Error_movie_span.innerText = "";
             }
 
               
-            async function addMovieAPI(name, year, img){
+            async function addMovieAPI(name, year, img, movie_description){
+                console.log(`Description is ${movie_description}`)
                 try{
 
                     let formData = new FormData();
                     formData.append('movie_name', name);
                     formData.append('movie_year', year);
                     formData.append('movie_image', img);
+                    formData.append('movie_description',movie_description);
                     let response = await fetch('/add_movie',{
                         method: 'POST',
                         body: formData                            
@@ -618,21 +629,62 @@
             }
 
             function showData(data){
-               
+                const mainDiv = document.getElementById('show_movies')
                 for (const key in data){
 
                     console.log(`NAME: ${data[key]['movieName']}`)
                     console.log(`YEAR: ${data[key]['year']}`)
-                    const divElement = document.createElement('div')
-                    const divElement2 = document.createElement('div')
-                    const name = document.createElement('span')
-                    const year = document.createElement('span')
-                 
+                    console.log(`desc: ${data[key]['description']}`)
+                    console.log(`img: ${data[key]['movie_img']}`)
+                    const divElement = document.createElement('div');
+                    const divElement2 = document.createElement('div');
+                    const divElement3 = document.createElement('div');
+                    const divElement4 = document.createElement('div');
+                    const innerMain = document.createElement('div');
+                    const name = document.createElement('span');
+                    const year = document.createElement('span');
+                    const description = document.createElement('span');
+                    const image = document.createElement('img');
+                    const additionalText = document.createElement('div');
+
+                    name.innerText = `Movie name: ${data[key]['movieName']}`;
+                    year.innerText = `Release: ${data[key]['year']}`;
+                   
+                    image.id = 'movie';
+                    image.src = `../static/movie_images/${data[key]['movie_img']}`;
+                    additionalText.className = 'additional-text';
+                    additionalText.innerText =data[key]['description'];
+                    innerMain.className= "innerMain"
+                    divElement2.appendChild(image);
+
+                    divElement.className = 'movie_container';
+                    divElement3.appendChild(name);
+                    divElement4.appendChild(year);
+               
+
+                    divElement.appendChild(divElement3);
+                    divElement.appendChild(divElement4);
+                    
+
+                    innerMain.appendChild(divElement2);
+                    innerMain.appendChild(divElement);
+                    innerMain.appendChild(additionalText);
+
+                    mainDiv.appendChild(innerMain)
                 }
 
             }
-
-
+                    /*
+                    <div id= "show_movies">
+            <div><img id= "movie" src="../static/movie_images/10_!_pan_prstenu.png"></div>
+                <div class="movie_container">
+                    <div><span>Pan Prstenu</span></div>
+                    <div><span>2003</span></div>
+                    
+                </div>
+                <div class="additional-text">Your additional text goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+                </div>
+                    */
         });
     
 </script>

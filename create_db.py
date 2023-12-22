@@ -1,8 +1,4 @@
-from main import app, db, User, Moviestack
-
-
-pass
-
+from main import app, db
 
 
 
