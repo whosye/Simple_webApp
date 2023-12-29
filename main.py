@@ -8,14 +8,17 @@ from functions import resizeImg, resizeMovieImg
 import urllib.request
 import os 
 import re 
-
+from flask_cors import CORS
 
 app = Flask(__name__)
-api = Api(app)
-login_manager = LoginManager(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'initialkey' 
+app.config['CLIENT_MAX_BODY_SIZE'] = 16 * 1024 * 1024
+CORS(app)
+CORS(app, origins="*")
+api = Api(app)
+login_manager = LoginManager(app)
 
 db = SQLAlchemy(app)
 
@@ -82,6 +85,7 @@ def register():
         if current_user.is_authenticated:
             logout_user()
     return render_template('register.html')
+
 
 @app.route('/movie')
 @login_required
@@ -178,6 +182,7 @@ class UserAlter(Resource):
         except:
             return {"message" : "error"}
         
+    
     def post(self):
         print("hi post ", current_user.id)
         if 'file' not in request.files:
@@ -193,7 +198,7 @@ class UserAlter(Resource):
         key = current_user.id
         print(f" key {key}")
         adress = resizeImg(img=file, name=file.filename, key= key)
-        print(f"AdRESS {adress}")
+        print(f"ADRESS {adress}")
      
         return {'message' : 'ok', 'image' :f'static/images/{adress}' }
 
@@ -237,7 +242,7 @@ class AlterIMGs(Resource):
         pattern = '_!_(.+)$'
         match = re.search(pattern, img_name_raw )
         if match:
-            db_img = Image.query.filter_by(user_id=current_user.id, name=match.group(1)).one()
+            db_img = Image.query.filter_by(user_id=current_user.id, name=match.group(1)).first()
             db.session.delete(db_img)
             db.session.commit()
         os.path.abspath('static')
@@ -297,7 +302,7 @@ api.add_resource(SetAvatar,'/avatar')
 api.add_resource(AlterIMGs,'/alter_img')
 api.add_resource(InsertMovie,'/add_movie')
 
-'/movies'
+
 if __name__ == "__main__":
 
     app.run(host="0.0.0.0", port=5000, debug=True)

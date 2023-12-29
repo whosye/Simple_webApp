@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Movies</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='movies.css') }}">
 
@@ -381,10 +382,13 @@
                 if (fileInput.files.length > 0){
                     const formData = new FormData();
                     formData.append('file', fileInput.files[0]);
+                    console.log("posilam data")
                 try{
+                    console.log("posilam data daaal")
                     let response = await fetch('/alter',{
                         method: 'POST',
-                        body: formData
+                        body: formData,
+
                         // content type is by default 'multipart/form-data'
                     })
                     data =  await response.json()

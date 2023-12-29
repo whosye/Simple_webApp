@@ -16,7 +16,7 @@ h1{
    
     position: absolute;
     left: 210px;
-    top:30px;
+    top:   30px;
     font: 'Arial', sans-serif;
     font-size:30px;
     font-weight: bold;
@@ -30,8 +30,8 @@ h1{
     justify-content: center;
     align-items: center;
     background-color: blanchedalmond;
-    width:500px;
-    height: 200px;
+    width: 20%;
+    height: 50%;
     border-radius: 20px;
     border-width: 10px;
     border-style: solid;
@@ -227,6 +227,7 @@ h1{
 }
 
 #show_panel{
+
     position: fixed;
     top: 50%;
     left: calc(60% + 50px);
