@@ -12,16 +12,13 @@ h1{
     text-align: center;
     font-size:50px;
 }
-#main_lab{
-   
-    position: absolute;
-    left: 210px;
-    top:   30px;
-    font: 'Arial', sans-serif;
-    font-size:30px;
-    font-weight: bold;
+
+#container{
+    display: grid;
+    grid-template-columns: auto auto
 }
-#user_panel{
+
+#user_panel{    
     
     margin-left: 30px;
     text-align: left;
@@ -30,8 +27,8 @@ h1{
     justify-content: center;
     align-items: center;
     background-color: blanchedalmond;
-    width: 20%;
-    height: 50%;
+    width: 450px;
+    height:110px;
     border-radius: 20px;
     border-width: 10px;
     border-style: solid;
@@ -235,7 +232,7 @@ h1{
     background-color: blanchedalmond;
     padding: 20px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
-    width:1000px;
+    width:500px;
     overflow-y: auto;
     height: 100vh;
     border-top: 100px solid black;
@@ -286,9 +283,7 @@ h1{
 #show_all_movie_button{
     width: 50px;
 }
-#show_movies{
 
-}
 .innerMain{
     display: grid;
     justify-content: center;

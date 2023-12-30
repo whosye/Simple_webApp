@@ -9,150 +9,135 @@
 
 </head>
 <body>
-    
-    
     <div id="container">
 
-       
-        <div><span id="main_lab"> Main Settings</span></div>
+        <div id="main-item1">
             <div id="user_panel">
+                <div><img id= "avatar" alt="User_Photo"></div>
+                <div><button id="log_out">Log out</button></div>
+                <div><button id="settings"></button></div>
+                <div><button id="addMovie"></button></div>
+            </div>
+        
+        
+            <div id="settings_panel">
+                <div class="grid-item"id="grid-item-1">Email: </div>
+                <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
+                <div class="grid-item"id="grid-item-3"><button id="grid_button1" >Change</button></div>
+                <div class="grid-item"id="grid-item-4">Nick: </div>
+                <div class="grid-item"id="grid-item-5">{{user_data.username}}</div>
+                <div class="grid-item"id="grid-item-6"><button id="grid_button2" >Change</button></div>
+                <div class="grid-item"id="grid-item-7">Photo: </div>
+                <div class="grid-item"id="grid-item-8"><button id="grid_button3" >Change</button></div>
+                <div class="grid-item"id="grid-item-9"></div>
+                <div class="grid-item"id="grid-item-10">Password: </div>
+                <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
+            </div>
             
-                <img id= "avatar" alt="User_Photo">
-                <button id="log_out">Log out</button>
-                <button id="settings"></button>
-                <button id="addMovie"></button>
 
+            <div id="modal"></div>
+            
+            <div id= "change">
+                <div id="change_grid">
+                    <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
+                    <div class="grid-item1"><input id="new_email" type="email"></div>
+                    <div class="grid-item1"><button id="Submit_new_email">Submit</button></div>
+                    <div class="grid-item1"><button id="Cancel_change1">Cancel</button></div>
+                </div>
+            
+                <div>
+                    <p id="Email_Result"></p>
+                </div>
             </div>
-        <br>
 
-
-        <div id="settings_panel">
-            <div class="grid-item"id="grid-item-1">Email: </div>
-            <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
-            <div class="grid-item"id="grid-item-3"><button id="grid_button1" >Change</button></div>
-            <div class="grid-item"id="grid-item-4">Nick: </div>
-            <div class="grid-item"id="grid-item-5">{{user_data.username}}</div>
-            <div class="grid-item"id="grid-item-6"><button id="grid_button2" >Change</button></div>
-            <div class="grid-item"id="grid-item-7">Photo: </div>
-            <div class="grid-item"id="grid-item-8"><button id="grid_button3" >Change</button></div>
-            <div class="grid-item"id="grid-item-9"></div>
-            <div class="grid-item"id="grid-item-10">Password: </div>
-            <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
-        </div>
-        
-
-        <div id="modal">
-        </div>
-
-        <div id= "change">
-            <div id="change_grid">
-                <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
-                <div class="grid-item1"><input id="new_email" type="email"></div>
-                <div class="grid-item1"><button id="Submit_new_email">Submit</button></div>
-                <div class="grid-item1"><button id="Cancel_change1">Cancel</button></div>
-            </div>
-        
-            <div>
-                <p id="Email_Result"></p>
-            </div>
-        </div>
-
-        <div id= "change2">
-            <div id="change_grid">
-                <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
-                <div class="grid-item1"><input id="new_nick"></div>
-                <div class="grid-item1"><button id="Submit_new_nick">Submit</button></div>
-                <div class="grid-item1"><button id="Cancel_change2">Cancel</button></div>
-            </div>
-        
-        </div>
-
-        <div id= "change3">
-            <form id="uploadForm" enctype="multipart/form-data">
-            <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
-                <div class="grid-item1"><input type=file id="fileInput"></div>
-                <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
-                <div class="grid-item1"><button id="Submit_photo">Submit</button></div>
-            </form>
-                <div class="grid-item1"><button id="Uploaded_photo">Show Uploaded</button></div>
-
-            <div>
-                <p id="Photo_Result"></p>
-            </div>
-        </div>
-
-
-        <div id= "change4">
-
-            <div id="change_grid">
-                <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
-                <div class="grid-item1"><input id="old_password"></div>
-
-                <div class="grid-item1"><label for="new_password" id="new_password_id">New password</label></div>
-                <div class="grid-item1"><input id="new_password"></div>
-
-                <div class="grid-item1"><label for="confirm_password" id="confirm_password_id">Confirm password</label></div>
-                <div class="grid-item1"><input id="confirm_password"></div>
-
-            </div>
-        
-            <div id="change_grid4_add">
-                <button id="Submit_new_password">Submit</button>
-                <button id="Cancel_change4">Cancel</button>
+            <div id= "change2">
+                <div id="change_grid">
+                    <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
+                    <div class="grid-item1"><input id="new_nick"></div>
+                    <div class="grid-item1"><button id="Submit_new_nick">Submit</button></div>
+                    <div class="grid-item1"><button id="Cancel_change2">Cancel</button></div>
+                </div>
             
             </div>
-            <div><p id="password_Result"></p> </div>
-        </div>
 
-        <div id="showImages">
-            <div><button id="show_images_close">Exit</button></div>
-            <br>
-            <div id="showImages_grid">
+            <div id= "change3">
+                <form id="uploadForm" enctype="multipart/form-data">
+                <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
+                    <div class="grid-item1"><input type=file id="fileInput"></div>
+                    <div class="grid-item1"><button id="Cancel_change3">Cancel</button></div>
+                    <div class="grid-item1"><button id="Submit_photo">Submit</button></div>
+                </form>
+                    <div class="grid-item1"><button id="Uploaded_photo">Show Uploaded</button></div>
+
+                <div>
+                    <p id="Photo_Result"></p>
+                </div>
+            </div>
+
+
+            <div id= "change4">
+                <div id="change_grid">
+                    <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
+                    <div class="grid-item1"><input id="old_password"></div>
+
+                    <div class="grid-item1"><label for="new_password" id="new_password_id">New password</label></div>
+                    <div class="grid-item1"><input id="new_password"></div>
+
+                    <div class="grid-item1"><label for="confirm_password" id="confirm_password_id">Confirm password</label></div>
+                    <div class="grid-item1"><input id="confirm_password"></div>
+                </div>
             
-            </div>
-        </div>
-
-        <div id="addMovie_panel">
-            <div id="addMovie_grid">
-            <div><label for="movie_name">Movie Name: </label></div>
-            <div><input id="movie_name"></div>
-            <div><label for="movie_year">Year: </label></div>
-            <div><input id="movie_year"></div>
-            <div><label for="movie_image">Img: </label></div>
-            <div><input type=file id="movie_image"></div>
-            <div><label for="movie_description">Description: </label></div>
-            <div><textarea rows="6" cols="25" id="movie_description"></textarea></div>
-            <div><button id="cancel_addMovie_panel">Cancel</button></div>
-            <div><button id="insert_new_movie">Submit</button></div>
-            <div><span id="adding_movie_error"></span> </div>
-            <button id="show_your_movies_button">Show Created</button>
-
+                <div id="change_grid4_add">
+                    <button id="Submit_new_password">Submit</button>
+                    <button id="Cancel_change4">Cancel</button>
+                </div>
+                <div><p id="password_Result"></p> </div>
             </div>
 
-        
-        </div>
-
-        <div id="show_panel">
-            <h1>Welcome, {{ user_data.username }}!</h1>
-            <div id="show_panel_in">
-                <label for="search_movie" id="search_movie_label">Search</label>
-                <input id="search_movie">
-                <button id="search_movie_button"></button>
-                <button id="show_all_movie_button">show All</button>
-            </div>
-            <br>
-
-            <div id="show_movies">
+            <div id="showImages">
+                <div><button id="show_images_close">Exit</button></div>
+                <br>
+                <div id="showImages_grid">
                 
+                </div>
+            </div>
+
+            <div id="addMovie_panel">
+                <div id="addMovie_grid">
+                    <div><label for="movie_name">Movie Name: </label></div>
+                    <div><input id="movie_name"></div>
+                    <div><label for="movie_year">Year: </label></div>
+                    <div><input id="movie_year"></div>
+                    <div><label for="movie_image">Img: </label></div>
+                    <div><input type=file id="movie_image"></div>
+                    <div><label for="movie_description">Description: </label></div>
+                    <div><textarea rows="6" cols="25" id="movie_description"></textarea></div>
+                    <div><button id="cancel_addMovie_panel">Cancel</button></div>
+                    <div><button id="insert_new_movie">Submit</button></div>
+                    <div><span id="adding_movie_error"></span> </div>
+                    <button id="show_your_movies_button">Show Created</button>
+                </div>
 
             </div>
 
+
+        </div id='main-item2'>
+            
+            <div id="show_panel">
+                <h1>Welcome, {{ user_data.username }}!</h1>
+                <div id="show_panel_in">
+                    <label for="search_movie" id="search_movie_label">Search</label>
+                    <input id="search_movie">
+                    <button id="search_movie_button"></button>
+                    <button id="show_all_movie_button">show All</button>
+                </div>
+                <br>
+                <div id="show_movies"></div>
+            </div>
         </div>
-
-
-
-
+            
     </div>
+</div>
 </body>
 
 <script>
