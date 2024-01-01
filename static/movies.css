@@ -14,8 +14,11 @@ h1{
 }
 
 #container{
-    display: grid;
-    grid-template-columns: auto auto
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+ 
+  
 }
 
 #user_panel{    
@@ -84,7 +87,7 @@ h1{
     border-width: 2px;
     border-style: solid;
     border-color: rgb(9, 9, 9);
-    width: 100px; /* Adjust as needed */
+    width: 100px; 
     height: 100px;
 }
 #settings_panel{
@@ -225,28 +228,79 @@ h1{
 
 #show_panel{
 
-    position: fixed;
-    top: 50%;
-    left: calc(60% + 50px);
-    transform: translate(-50%, -50%);
     background-color: blanchedalmond;
     padding: 20px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
     width:500px;
     overflow-y: auto;
     height: 100vh;
-    border-top: 100px solid black;
+    border-top: 10px solid black;
 
 }
-#show_panel_in{
-    display: flex;
-    justify-content: center;
+#logged_user{
+    font-style: italic;
+}
+#main-item3{
     background-color: grey;
-    border-bottom: 10px;
-    border-bottom: solid black;
-
+    border-top: 50px;
+    border-top: solid black;
+    width: 400px;
+    height: 400px;
 }
+
+#main-item3_wrapper{
+    grid-template-columns: 80px 110px 80px 80px 80px 50px;
+    grid-template-rows: 50px 50px;
+    display: grid;
+    gap: 0px;
+    margin-left: 20px;
+}
+
+#main-item3_wrapper_item0 {
     
+    grid-column: 1 / 4;  
+    grid-row: 1 / 2;   
+}
+
+#main-item3_wrapper_item1 {
+    margin-left: 10px;
+    margin-top: 5px;
+    grid-column: 1 / 2;
+    grid-row: 2 /3;   
+    z-index: 2;
+}
+
+#main-item3_wrapper_item2 {
+    margin-top: 5px;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;  
+    z-index: 2;
+}
+
+#main-item3_wrapper_item3 {
+    margin-top: 5px;
+    grid-column: 3 / 4;
+    grid-row:2 / 3;   
+    z-index: 2;
+}
+
+#main-item3_wrapper_item4 {
+    margin-top: 5px;
+    grid-column: 4 / 5;
+    grid-row: 2/ 3;    
+    z-index: 2;
+}
+#main-item3_wrapper_color{
+    grid-column: 1 / 5;
+    grid-row: 2 / 3;   
+    background-color: whitesmoke;
+    z-index: 1;
+    font-style: italic;
+    height: 60px;
+    width: 350px;
+    align-items: center;
+}
+
 #search_movie_button{
     background-image: url('../static/lupa_small2.jpg');
     width: 50px;
@@ -258,16 +312,18 @@ h1{
     height: 45px;
 }
 
+
+
 #search_movie_label{
-    width: 80px;
-    height: 50px;
-    background-color: chocolate;
+    display: inline-block;
+    width: 70px;
+    background-color:red;
+    font-style: italic;
+    color: black;
     text-align:center;
     text-decoration: solid;
     text-transform: uppercase;
     line-height: 50px
-
-
 }
 #movie_description{
     padding: 5px;
@@ -282,6 +338,7 @@ h1{
 }
 #show_all_movie_button{
     width: 50px;
+    height: 50px;
 }
 
 .innerMain{

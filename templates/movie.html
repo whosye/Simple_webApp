@@ -18,8 +18,6 @@
                 <div><button id="settings"></button></div>
                 <div><button id="addMovie"></button></div>
             </div>
-        
-        
             <div id="settings_panel">
                 <div class="grid-item"id="grid-item-1">Email: </div>
                 <div class="grid-item"id="grid-item-2">{{user_data.email}}</div>
@@ -33,10 +31,7 @@
                 <div class="grid-item"id="grid-item-10">Password: </div>
                 <div class="grid-item"id="grid-item-11"><button id="grid_button4" >Change password</button></div>
             </div>
-            
-
             <div id="modal"></div>
-            
             <div id= "change">
                 <div id="change_grid">
                     <div class="grid-item1"><label for="new_email" id="new_email_id">Insert new email</label></div>
@@ -49,7 +44,6 @@
                     <p id="Email_Result"></p>
                 </div>
             </div>
-
             <div id= "change2">
                 <div id="change_grid">
                     <div class="grid-item1"><label for="new_nick" id="new_nick_id">Insert new Nick</label></div>
@@ -59,7 +53,6 @@
                 </div>
             
             </div>
-
             <div id= "change3">
                 <form id="uploadForm" enctype="multipart/form-data">
                 <div class="grid-item1"><label for= "fileInput">Upload file</label></div>
@@ -73,8 +66,6 @@
                     <p id="Photo_Result"></p>
                 </div>
             </div>
-
-
             <div id= "change4">
                 <div id="change_grid">
                     <div class="grid-item1"><label for="old_password" id="new_nick_id">Old password</label></div>
@@ -93,7 +84,6 @@
                 </div>
                 <div><p id="password_Result"></p> </div>
             </div>
-
             <div id="showImages">
                 <div><button id="show_images_close">Exit</button></div>
                 <br>
@@ -101,7 +91,6 @@
                 
                 </div>
             </div>
-
             <div id="addMovie_panel">
                 <div id="addMovie_grid">
                     <div><label for="movie_name">Movie Name: </label></div>
@@ -117,27 +106,30 @@
                     <div><span id="adding_movie_error"></span> </div>
                     <button id="show_your_movies_button">Show Created</button>
                 </div>
-
             </div>
+        </div>
 
-
-        </div id='main-item2'>
+        <div id='main-item2'>
             
             <div id="show_panel">
-                <h1>Welcome, {{ user_data.username }}!</h1>
-                <div id="show_panel_in">
-                    <label for="search_movie" id="search_movie_label">Search</label>
-                    <input id="search_movie">
-                    <button id="search_movie_button"></button>
-                    <button id="show_all_movie_button">show All</button>
-                </div>
-                <br>
                 <div id="show_movies"></div>
             </div>
         </div>
-            
+
+
+        <div id="main-item3">
+            <h1>Searching panel</h1>
+            <div id="main-item3_wrapper">
+                <div id="main-item3_wrapper_item0"><p id="logged_user">Logged user: {{user_data.username}}</p></div>
+                <div id="main-item3_wrapper_item1"><label for="search_movie" id="search_movie_label">Search</label></div>
+                <div id="main-item3_wrapper_item2"><input id="search_movie"></div>
+                <div id="main-item3_wrapper_item3"><button id="search_movie_button"></button></div>
+                <div id="main-item3_wrapper_item4"><button id="show_all_movie_button">show All</button></div>
+                <div id="main-item3_wrapper_color"></div>
+            </div>
+        </div> 
     </div>
-</div>
+
 </body>
 
 <script>
@@ -663,17 +655,7 @@
                 }
 
             }
-                    /*
-                    <div id= "show_movies">
-            <div><img id= "movie" src="../static/movie_images/10_!_pan_prstenu.png"></div>
-                <div class="movie_container">
-                    <div><span>Pan Prstenu</span></div>
-                    <div><span>2003</span></div>
-                    
-                </div>
-                <div class="additional-text">Your additional text goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-                </div>
-                    */
+
         });
     
 </script>
