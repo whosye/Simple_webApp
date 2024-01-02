@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='movie_template_styles.css') }}">
+    <title>Movie</title>
+
+</head>
+<body>
+ 
+<div id="grid1">
+    <div id="item1"></div>
+    <div id="item2"><img id="author_img"></div>
+    <div id="item3"></div>
+</div>
+<br>
+
+<div id="grid2">
+    <div id="item4"></div>
+    <div id="item5"><img id="movie_img"></div>
+    <div id="item6">Rezie: Riddley Scott</div>
+    <div id="item7">Zanr: Drama</div>
+    <div id="item8">Hodnoceni: ?</div>
+    <div id="item9"></div>
+    <div id="item10"></div>
+</div>
+
+</body>
+
+</html>
+
+<script>
+
+
+    let urlParts = window.location.pathname.split('/');
+    console.log('urlParts', urlParts);
+    let id = urlParts[urlParts.length - 1];
+    console.log('id', id);
+    window.addEventListener('load', movie(id));
+
+
+    async function movie(id){
+        try{
+            let response = await fetch(`/movie_template_info/${id}`,{
+                method: "GET",
+                headers: {'Content-type' : 'application/json'}, 
+            })
+            if (response.ok){
+            let data = await response.json();
+            console.log(data.message);
+            fillTheGrid1(data.message)
+            fillTheGrid2(data.message)
+            }
+        }catch(error){
+            console.log(`Error ${error}`);
+        }
+    }
+
+    function fillTheGrid1(data){
+        document.getElementById("item1").innerText = "author:";
+        document.getElementById("author_img").src = "{{ url_for('static', filename='images/', _external=True) }}" + data['creator_img'];
+        document.getElementById("item3").innerText = data['creator_name'];
+    }
+
+
+    function fillTheGrid2(data){
+        document.getElementById("item4").innerText =  'Nazev: ' +data['movieName'];
+        document.getElementById("movie_img").src = "{{ url_for('static', filename='movie_images/', _external=True) }}" + data['movie_img'];
+        document.getElementById("item9").innerText =  'Rok Vydani: ' +data['year'];
+        document.getElementById("item10").innerText = data['description'];
+
+    }
+
+</script>

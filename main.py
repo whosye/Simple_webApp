@@ -100,8 +100,12 @@ def movie():
         return render_template('movie.html', user_data=user_data)
     else:
         return redirect(url_for('main.html'))
-  
+    
 
+@app.route('/movie_template/<movie_id>', defaults={'movie_id': None})
+@login_required
+def movie_template(movie_id):
+    return render_template('movie_template.html', movie_id=movie_id)
 
 class UsersLogin(Resource):
     def post(self):
@@ -257,9 +261,9 @@ class InsertMovie(Resource):
         for movie in movies:
             movie_im = MovieImage.query.filter_by(movie_id = movie.id).one()
             jsonList.append({
+                "movieID" : movie.id,
                 "movieName" : movie.movieName,
                 "year" : movie.year,
-                'description' : movie.description,
                 'movie_img' : f"{movie.id}_!_{movie_im.name}"
 
             })
@@ -291,6 +295,29 @@ class InsertMovie(Resource):
             print(  movie_name , movie_year, movie_img.filename )
             return{'message' : 'ok'}
 
+
+class Movie_template_handle(Resource):
+
+    def get(self, val):
+        val = int(val)
+        movie_obj = Moviestack.query.filter_by(id= val).first()
+        movie_img_obj = MovieImage.query.filter_by(movie_id= val).first()
+        creator_obj = User.query.filter_by(id= movie_obj.addedBy).first() 
+        data = {
+        'movie_img' : f"{val}_!_{movie_img_obj.name}",
+        'movieName' : movie_obj.movieName,
+        'year' : movie_obj.year,
+        'date' : movie_obj.date,
+        'description' : movie_obj.description,
+        'addedBy' :creator_obj.username,
+        'creator_name' : creator_obj.username,
+        'creator_img' :  creator_obj.avatar
+        }
+
+        print(f"data : {data}")
+        return jsonify({'message': data})
+
+
          
         
        
@@ -301,6 +328,7 @@ api.add_resource(UserAlter,'/alter')
 api.add_resource(SetAvatar,'/avatar')
 api.add_resource(AlterIMGs,'/alter_img')
 api.add_resource(InsertMovie,'/add_movie')
+api.add_resource(Movie_template_handle,'/movie_template_info/<val>')
 
 
 if __name__ == "__main__":

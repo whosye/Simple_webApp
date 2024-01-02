@@ -613,10 +613,10 @@
                 const mainDiv = document.getElementById('show_movies')
                 for (const key in data){
 
-                    console.log(`NAME: ${data[key]['movieName']}`)
-                    console.log(`YEAR: ${data[key]['year']}`)
-                    console.log(`desc: ${data[key]['description']}`)
-                    console.log(`img: ${data[key]['movie_img']}`)
+                    console.log(`NAME: ${data[key]['movieName']}`);
+                    console.log(`YEAR: ${data[key]['year']}`);
+                    console.log(`img: ${data[key]['movie_img']}`);
+                    console.log(`id: ${data[key]['movieID']}`);
                     const divElement = document.createElement('div');
                     const divElement2 = document.createElement('div');
                     const divElement3 = document.createElement('div');
@@ -626,17 +626,20 @@
                     const year = document.createElement('span');
                     const description = document.createElement('span');
                     const image = document.createElement('img');
-                    const additionalText = document.createElement('div');
+            
 
                     name.innerText = `Movie name: ${data[key]['movieName']}`;
                     year.innerText = `Release: ${data[key]['year']}`;
                    
                     image.id = 'movie';
                     image.src = `../static/movie_images/${data[key]['movie_img']}`;
-                    additionalText.className = 'additional-text';
-                    additionalText.innerText =data[key]['description'];
-                    innerMain.className= "innerMain"
+
+                    innerMain.className= "innerMain";
                     divElement2.appendChild(image);
+                    divElement2.addEventListener('click',()=> {
+                        let queryString = data[key]['movieID'];
+                        window.location.href =  "/movie_template/" + queryString;
+                    })
 
                     divElement.className = 'movie_container';
                     divElement3.appendChild(name);
@@ -649,9 +652,9 @@
 
                     innerMain.appendChild(divElement2);
                     innerMain.appendChild(divElement);
-                    innerMain.appendChild(additionalText);
+          
 
-                    mainDiv.appendChild(innerMain)
+                    mainDiv.appendChild(innerMain);
                 }
 
             }
