@@ -47,6 +47,9 @@ class Moviestack(db.Model):
     addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
     date = db.Column(db.Date, default=datetime.utcnow)
     description = db.Column(db.String(100))
+    rating = db.Column(db.Integer)
+    genre = db.Column(db.String(10))
+    direction = db.Column(db.String(20))
     comments = db.relationship('Comments', backref='moviestack', lazy=True)
 
 class Comments(db.Model):
@@ -274,13 +277,13 @@ class InsertMovie(Resource):
         
             movie_name = request.form.get('movie_name')
             movie_year = request.form.get('movie_year')
+            movie_genre= request.form.get('movie_genre')
+            movie_direction = request.form.get('movie_direction')
             movie_img = request.files.get('movie_image')
             movie_desc = request.form.get('movie_description')
             print("user id ", current_user.id, " movie name ", movie_img.filename, 'desc',movie_desc  )
                 
-
-                
-            newMovie = Moviestack(movieName= movie_name, year=movie_year, addedBy=current_user.id, description= movie_desc )
+            newMovie = Moviestack(movieName= movie_name, year=movie_year, addedBy=current_user.id, description= movie_desc, genre= movie_genre, direction = movie_direction )
             db.session.add(newMovie)
             db.session.commit()
 
@@ -311,17 +314,53 @@ class Movie_template_handle(Resource):
         'description' : movie_obj.description,
         'addedBy' :creator_obj.username,
         'creator_name' : creator_obj.username,
+        'rating' : movie_obj.rating,
         'creator_img' :  creator_obj.avatar
         }
 
         print(f"data : {data}")
         return jsonify({'message': data})
 
-
-         
+    def put(self, val):
         
-       
+        val = int(val)
+        try:
+            comment = Comments.query.filter_by(Movie= val, author=current_user.id).first()
+            if comment is None:
+                return {'data' : 404}
+            else:
+                return {'data' : comment.content}
+        except:
+            return {'data' : 'error'}
         
+    def post(self, val):
+        val = int(val)
+        try:
+            content = request.json
+            comment_obj = Comments.query.filter_by(Movie=val, author=current_user.id).first()
+            if comment_obj is None:
+                new_comment = Comments(content= content['data'], author = current_user.id, Movie = val)
+                movie = Moviestack.query.filter_by(id=val).first()
+                movie.rating = int(content['rating'])
+                db.session.add(new_comment)
+                db.session.commit()
+                return 201
+            else:
+                ###########
+                # TODO: ADD rating for movie overwrite the rating in db, create some additional table for rattings for movie - foreign keys - user, current movie, allowed only ONE ! 
+                # TODO: Add possibility to DELETE review 
+                # TODO: Add showing created reviews for current movie 
+                # TODO: Create searching mechanism 
+                comment_obj.content = content['data']
+                movie = Moviestack.query.filter_by(id=val).first()
+                movie.rating = int(content['rating'])
+                db.session.commit()
+                return 201
+                
+                
+        except:
+            return 'error'
+                 
 api.add_resource(UsersLogin,"/log")
 api.add_resource(UserRegister,"/new_user_reg")
 api.add_resource(UserAlter,'/alter')

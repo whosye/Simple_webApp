@@ -10,7 +10,6 @@
 </head>
 <body>
     <div id="container">
-
         <div id="main-item1">
             <div id="user_panel">
                 <div><img id= "avatar" alt="User_Photo"></div>
@@ -97,6 +96,12 @@
                     <div><input id="movie_name"></div>
                     <div><label for="movie_year">Year: </label></div>
                     <div><input id="movie_year"></div>
+
+                    <div><label for="rezie">Direction: </label></div>
+                    <div><input id="rezie"></div>
+                    <div><label for="zanr">Genre: </label></div>
+                    <div><input id="zanr"></div>
+                    
                     <div><label for="movie_image">Img: </label></div>
                     <div><input type=file id="movie_image"></div>
                     <div><label for="movie_description">Description: </label></div>
@@ -541,6 +546,9 @@
                 let movie_year = document.getElementById('movie_year').value
                 let movie_image = document.getElementById('movie_image').files[0];
                 let movie_description = document.getElementById('movie_description').value
+                let movie_genre = document.getElementById('zanr').value
+                let movie_direction = document.getElementById('rezie').value
+
                 console.log(`Description is ${movie_description}`)
                 if ((movie_name == "")){
                     console.log("movie_name ", movie_name)
@@ -552,21 +560,28 @@
                     Error_movie_span.innerText = "Empty movie year or not integer";
                     Error_movie_span.style.backgroundColor = 'red';
                     return
-                }else{
+                }else if(movie_genre.value=="" &&  movie_direction.value==""){
+                    Error_movie_span.innerText = "Empty";
+                    Error_movie_span.style.backgroundColor = 'red';
+                    return
+                }
+                else{
                     console.log(`Fetching ${movie_year}`)
-                    addMovieAPI(movie_name, movie_year, movie_image,movie_description)
+                    addMovieAPI(movie_name, movie_year, movie_image,movie_description,movie_genre, movie_direction)
                 }
                 Error_movie_span.innerText = "";
             }
 
               
-            async function addMovieAPI(name, year, img, movie_description){
+            async function addMovieAPI(name, year, img, movie_description,movie_genre, movie_direction){
                 console.log(`Description is ${movie_description}`)
                 try{
 
                     let formData = new FormData();
                     formData.append('movie_name', name);
                     formData.append('movie_year', year);
+                    formData.append('movie_genre', movie_genre);
+                    formData.append('movie_direction', movie_direction);
                     formData.append('movie_image', img);
                     formData.append('movie_description',movie_description);
                     let response = await fetch('/add_movie',{

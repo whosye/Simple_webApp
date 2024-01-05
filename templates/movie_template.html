@@ -8,35 +8,147 @@
 
 </head>
 <body>
- 
-<div id="grid1">
-    <div id="item1"></div>
-    <div id="item2"><img id="author_img"></div>
-    <div id="item3"></div>
-</div>
-<br>
 
-<div id="grid2">
-    <div id="item4"></div>
-    <div id="item5"><img id="movie_img"></div>
-    <div id="item6">Rezie: Riddley Scott</div>
-    <div id="item7">Zanr: Drama</div>
-    <div id="item8">Hodnoceni: ?</div>
-    <div id="item9"></div>
-    <div id="item10"></div>
-</div>
+    <div id="add_review">
+        <div id="add_review_item1"><h2>Adding review</h2></div>
+        <div id="add_review_item2"><textarea rows="12" cols="24" id="review_text"></textarea></div>
+        <div id="add_review_item3"><button id='submit_review'>Submit</button></div>
+        <div id="add_review_item3a5"><button id='delete_review'>Delete</button></div>
+        <div id="add_review_item4"><button id='cancel_adding_review' onclick="Cancel_adding()">Cancel</button></div>
+        <div id="add_review_item51">Hodnoceni</div>
+        <div id="add_review_item52"><input type="range" id="slider" min="0" max="100" value="0" step="1" onchange="hodnoceniSlider()"></div>
+        <div id="add_review_item5"></div>
 
+    </div>
+
+    <div id='wrapper_main'>
+        <div id='wrapper'>
+            <div id="grid1">
+                <div id="item1"></div>
+                <div id="item2"><img id="author_img"></div>
+                <div id="item3"></div>
+            </div>
+            <br>
+            <div id="grid2">
+                <div id="item4"></div>
+                <div id="item5"><img id="movie_img"></div>
+                <div id="item6">Rezie: Riddley Scott</div>
+                <div id="item7">Zanr: Drama</div>
+                <div id="item8">Hodnoceni: ?</div>
+                <div id="item9"></div>
+                <div id="item92">Popis:</div>
+                <div id="item10"></div>
+                <div id="item11"><button id='review_button'>Review</button></div>
+                <div id="item12"><button onclick="Redirect()">Back</button></div>
+            </div>
+        </div>
+        <br>
+        <div id='review_wrapper'>
+            <div id='review'></div>
+        </div>
+    </div>
+
+
+    <div id='modal'></div>
 </body>
 
 </html>
 
 <script>
-
-
+    /* Get Movie ID */
     let urlParts = window.location.pathname.split('/');
-    console.log('urlParts', urlParts);
     let id = urlParts[urlParts.length - 1];
-    console.log('id', id);
+    
+    /* Handle adding reviews*/
+    const review_text = document.getElementById('review_text');
+    async function fillTheWithOldReview(id){
+        try{
+            let response = await fetch(`/movie_template_info/${id}`,{
+                method: "PUT",
+                headers: {'Content-type' : 'application/json'}, 
+            })
+            if (response.ok){
+                let data = await response.json();
+                console.log(`data = ${data.data}`)
+                if(data.data != '404' && data.data != 'error'){
+                    review_text.innerText = data.data;
+                }
+            }
+        }catch(error){
+            console.log(`Error ${error}`);
+        }
+    }
+
+
+    const result_message = document.getElementById('add_review_item5');
+    async function fillTheWithNewReview(id, content){
+        try{
+            let response = await fetch(`/movie_template_info/${id}`,{
+                method: "POST",
+                headers: {'Content-type' : 'application/json'}, 
+                body: JSON.stringify({"data" : content, 'rating' : slider.value})
+            })
+            if (response.ok){
+                let data = await response.json();
+                if (data == '201'){
+                    result_message.innerText = 'Succes'
+                }else{
+                    result_message.innerText = 'Error'
+                }
+            }
+        }catch(error){
+            console.log(`Error ${error}`);
+        }
+    }
+
+
+    const modal = document.getElementById('modal');
+    const review_button = document.getElementById('review_button');
+    const add_review= document.getElementById('add_review');
+    const wrapper_main = document.getElementById('wrapper_main');
+    modal.style.visibility = 'hidden';
+    add_review.style.visibility = 'hidden';
+    review_button.addEventListener('click', ()=>{
+        if (modal.style.visibility == 'hidden'){
+            modal.style.visibility ='visible';
+            add_review.style.visibility = 'visible';
+            fillTheWithOldReview(id)
+            
+        }else{
+            modal.style.visibility = 'hidden';
+            add_review.style.visibility = 'hidden';
+        }
+    })
+
+    function Cancel_adding(){
+        modal.style.visibility = 'hidden';
+        add_review.style.visibility = 'hidden';
+    }
+
+    const submit_review =  document.getElementById('submit_review');
+    submit_review.addEventListener('click',()=>{
+        let content = review_text.value;
+        console.log(`content to send ${content} with id ${id}`)
+        if (content.length != 0){
+            fillTheWithNewReview(id, content);
+        }else{
+            result_message.innerText = 'Empty input'
+        }
+            
+    })
+
+    const slider = document.getElementById('slider');
+    const label_slider = document.getElementById('add_review_item51');
+    function hodnoceniSlider(){
+        label_slider.innerText = `Hodnoceni ${slider.value}`;
+        
+    }
+        
+      
+
+
+
+    /* Get info for the movie */
     window.addEventListener('load', movie(id));
 
 
@@ -66,10 +178,19 @@
 
     function fillTheGrid2(data){
         document.getElementById("item4").innerText =  'Nazev: ' +data['movieName'];
+        if (data['rating'] === null){
+            document.getElementById("item8").innerText = 'Rating ?' 
+        }else{
+            document.getElementById("item8").innerText = 'Rating ' +data['rating']
+        }
         document.getElementById("movie_img").src = "{{ url_for('static', filename='movie_images/', _external=True) }}" + data['movie_img'];
         document.getElementById("item9").innerText =  'Rok Vydani: ' +data['year'];
         document.getElementById("item10").innerText = data['description'];
 
+    }
+
+    function Redirect(){
+        window.location.href ='/movie';
     }
 
 </script>
