@@ -34,7 +34,6 @@ body{
     grid-template-columns: 50px 50px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px ;
     grid-template-rows: 20px 20px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px 40px;  
     padding-top: 50px;
-
 }
 #cancel_adding_review, #delete_review, #submit_review {
     width: 60px;
@@ -91,7 +90,10 @@ body{
     display: grid;
     grid-template-columns: 100px 100px 100px 100px;
     background-color:  blanchedalmond;
-    padding: 20px; /* Add padding to control the spacing */ 
+    padding: 20px; 
+    border-bottom: 50px;
+    border-bottom: solid black;;
+
 
 
 }
@@ -155,6 +157,7 @@ body{
     grid-row: 9/12;   
     background-color: azure;
     width: 300px;
+    overflow: auto;
 }
 
 #item11{/*hodnoceni*/ 
@@ -169,3 +172,66 @@ body{
 
 }
 
+
+#wrapper_show_review_wrapper{
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: auto;
+}
+#show_review_wrapper{
+
+    width: 400px;
+    display: grid;
+    grid-template-columns: 400px;
+
+    
+}
+.show_review_grid1{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
+    grid-template-rows: 20px 20px 20px 20px auto auto;
+    border-bottom: 50px;
+    border-bottom: solid black;
+    background-color:  blanchedalmond;
+
+
+}
+
+.show_review_item1{
+    grid-column: 1/ 4;  
+    grid-row:1/2; ; 
+    background-color: gray; 
+    height: 25px; 
+}
+
+.show_review_item2{
+    grid-column: 4/ 6;  
+    grid-row:1/2; ;
+    background-color: gray;  
+    height: 25px;     
+}
+
+.review_id_img{
+    width: 25px;
+    height: 25px;
+    background-color: gray;
+}
+
+.show_review_item3{
+    grid-column: 6/ 9;  
+    grid-row:1/2; ;  
+    background-color: gray;
+    height: 25px;
+}
+.show_review_item4{
+    grid-column: 1/ 9;  
+    grid-row:3/4; ; 
+}
+.show_review_item5{
+    grid-column: 1/ 13;  
+    grid-row:5/6; ; 
+    height: 150px;
+    overflow: auto;
+}

@@ -47,7 +47,7 @@ class Moviestack(db.Model):
     addedBy = db.Column(db.Integer, db.ForeignKey("user.id"))
     date = db.Column(db.Date, default=datetime.utcnow)
     description = db.Column(db.String(100))
-    rating = db.Column(db.Integer)
+    movie_rating = db.Column(db.Integer)
     genre = db.Column(db.String(10))
     direction = db.Column(db.String(20))
     comments = db.relationship('Comments', backref='moviestack', lazy=True)
@@ -59,6 +59,7 @@ class Comments(db.Model):
     author = db.Column(db.String(10),db.ForeignKey("user.id") )
     Movie = db.Column(db.String(10), db.ForeignKey("moviestack.id"))
     date  = db.Column(db.Date, default=datetime.utcnow)
+    rating = db.Column(db.Integer)
     
 class Image(db.Model):
     __tablename__ = 'images'
@@ -146,7 +147,7 @@ class UserRegister(Resource):
             print(userEmail)
             print(userPassword)
             print(userNick)
-            newUser = User(username=userNick,email= userEmail,password=userPassword, avatar = "default")
+            newUser = User(username=userNick,email= userEmail,password=userPassword, avatar = "default.png")
             db.session.add( newUser )
             db.session.commit()
             response_message = "ok"
@@ -306,6 +307,26 @@ class Movie_template_handle(Resource):
         movie_obj = Moviestack.query.filter_by(id= val).first()
         movie_img_obj = MovieImage.query.filter_by(movie_id= val).first()
         creator_obj = User.query.filter_by(id= movie_obj.addedBy).first() 
+        comment_objs = Comments.query.filter_by(Movie=int(val)).all()
+
+        if len(comment_objs) != 0:
+            rating_sum, comments = 0, []
+            for obj in comment_objs:
+                rating_sum += int(obj.rating)
+                user_obj = User.query.filter_by(id=obj.author).first()
+                comments.append({
+                    'content' : obj.content,
+                    'author'  : user_obj.username,
+                    'img' : user_obj.avatar,
+                    'rated' : obj.rating
+                })
+
+            rating_final = round(rating_sum/len(comment_objs),2)
+            movie_obj.movie_rating =  rating_final
+            db.session.commit()
+        else:
+            rating_final = None
+      
         data = {
         'movie_img' : f"{val}_!_{movie_img_obj.name}",
         'movieName' : movie_obj.movieName,
@@ -314,8 +335,9 @@ class Movie_template_handle(Resource):
         'description' : movie_obj.description,
         'addedBy' :creator_obj.username,
         'creator_name' : creator_obj.username,
-        'rating' : movie_obj.rating,
-        'creator_img' :  creator_obj.avatar
+        'creator_img' :  creator_obj.avatar,
+        'rating' : rating_final,
+        'reviews' : comments
         }
 
         print(f"data : {data}")
@@ -326,10 +348,11 @@ class Movie_template_handle(Resource):
         val = int(val)
         try:
             comment = Comments.query.filter_by(Movie= val, author=current_user.id).first()
+            comment_obj = Comments.query.filter_by(Movie=val, author=current_user.id).first()
             if comment is None:
                 return {'data' : 404}
             else:
-                return {'data' : comment.content}
+                return {'data' : comment.content, 'rating' :comment_obj.rating}
         except:
             return {'data' : 'error'}
         
@@ -339,9 +362,7 @@ class Movie_template_handle(Resource):
             content = request.json
             comment_obj = Comments.query.filter_by(Movie=val, author=current_user.id).first()
             if comment_obj is None:
-                new_comment = Comments(content= content['data'], author = current_user.id, Movie = val)
-                movie = Moviestack.query.filter_by(id=val).first()
-                movie.rating = int(content['rating'])
+                new_comment = Comments(content= content['data'], author = current_user.id, Movie = val, rating=int(content['rating']) )
                 db.session.add(new_comment)
                 db.session.commit()
                 return 201
@@ -352,14 +373,25 @@ class Movie_template_handle(Resource):
                 # TODO: Add showing created reviews for current movie 
                 # TODO: Create searching mechanism 
                 comment_obj.content = content['data']
-                movie = Moviestack.query.filter_by(id=val).first()
-                movie.rating = int(content['rating'])
+                comment_obj.rating = int(content['rating'])
                 db.session.commit()
                 return 201
                 
                 
         except:
             return 'error'
+        
+    def delete(self, val):
+        val = int(val)
+        comment_obj = Comments.query.filter_by(Movie=val, author=current_user.id).first()
+
+        if comment_obj is not None:
+            db.session.delete(comment_obj)
+            db.session.commit()
+            return 201
+        else:
+            return 404
+
                  
 api.add_resource(UsersLogin,"/log")
 api.add_resource(UserRegister,"/new_user_reg")

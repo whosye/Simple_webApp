@@ -13,7 +13,7 @@
         <div id="add_review_item1"><h2>Adding review</h2></div>
         <div id="add_review_item2"><textarea rows="12" cols="24" id="review_text"></textarea></div>
         <div id="add_review_item3"><button id='submit_review'>Submit</button></div>
-        <div id="add_review_item3a5"><button id='delete_review'>Delete</button></div>
+        <div id="add_review_item3a5"><button id='delete_review' onclick="Delete_review()">Delete</button></div>
         <div id="add_review_item4"><button id='cancel_adding_review' onclick="Cancel_adding()">Cancel</button></div>
         <div id="add_review_item51">Hodnoceni</div>
         <div id="add_review_item52"><input type="range" id="slider" min="0" max="100" value="0" step="1" onchange="hodnoceniSlider()"></div>
@@ -48,6 +48,10 @@
         </div>
     </div>
 
+    <div id="wrapper_show_review_wrapper"><div id="show_review_wrapper"></div></div>
+
+
+
 
     <div id='modal'></div>
 </body>
@@ -61,6 +65,7 @@
     
     /* Handle adding reviews*/
     const review_text = document.getElementById('review_text');
+    const slider = document.getElementById('slider');
     async function fillTheWithOldReview(id){
         try{
             let response = await fetch(`/movie_template_info/${id}`,{
@@ -72,6 +77,8 @@
                 console.log(`data = ${data.data}`)
                 if(data.data != '404' && data.data != 'error'){
                     review_text.innerText = data.data;
+                    slider.value = data.rating
+                    label_slider.innerText = `Hodnoceni ${data.rating}`;
                 }
             }
         }catch(error){
@@ -92,6 +99,9 @@
                 let data = await response.json();
                 if (data == '201'){
                     result_message.innerText = 'Succes'
+                    setTimeout( function(){
+                                location.reload();
+                            }, 500);
                 }else{
                     result_message.innerText = 'Error'
                 }
@@ -137,14 +147,32 @@
             
     })
 
-    const slider = document.getElementById('slider');
+    
     const label_slider = document.getElementById('add_review_item51');
     function hodnoceniSlider(){
         label_slider.innerText = `Hodnoceni ${slider.value}`;
         
     }
         
-      
+    const delete_review = document.getElementById('delete_review');
+
+    async function Delete_review(){
+        let response = await fetch(`/movie_template_info/${id}`,{
+            method: "DELETE", 
+            headers: {'Content-type' : 'application/json'}, 
+        })
+
+        let data = await response.json();
+                if (data == '201'){
+                    result_message.innerText = 'Succes Delete';
+                    setTimeout( function(){
+                                location.reload();
+                            }, 500);
+
+                }else if( data =='404'){
+                    result_message.innerText = 'No data';
+                }
+    }
 
 
 
@@ -163,6 +191,7 @@
             console.log(data.message);
             fillTheGrid1(data.message)
             fillTheGrid2(data.message)
+            fillTheGrid3(data.message)
             }
         }catch(error){
             console.log(`Error ${error}`);
@@ -181,13 +210,58 @@
         if (data['rating'] === null){
             document.getElementById("item8").innerText = 'Rating ?' 
         }else{
-            document.getElementById("item8").innerText = 'Rating ' +data['rating']
+            document.getElementById("item8").innerText = 'Rating: ' +data['rating']
         }
         document.getElementById("movie_img").src = "{{ url_for('static', filename='movie_images/', _external=True) }}" + data['movie_img'];
         document.getElementById("item9").innerText =  'Rok Vydani: ' +data['year'];
         document.getElementById("item10").innerText = data['description'];
+    }
+    function fillTheGrid3(data) {
+        const main_wrap= document.getElementById("show_review_wrapper")
+    for (const review of data['reviews']) {
+        console.log(review['content']);
+        console.log(review['author']);
+        console.log(review['img']);
+        console.log(review['rated']);
+        
+
+        const wrapper = document.createElement('div')
+        wrapper.className = "show_review_grid1"
+
+        const author = document.createElement('div')
+        author.className = 'show_review_item1' 
+        author.innerText = "Author: "
+
+        const img_div = document.createElement('div')
+        img_div.className = 'show_review_item2' 
+        const img = document.createElement('img')
+        img.src = `../static/images/${review['img']}`
+        img.className = 'review_id_img'
+        img_div.appendChild(img)
+
+        const name = document.createElement('div')
+        name.className = 'show_review_item3' 
+        name.innerText = review['author']
+
+        const rating = document.createElement('div')
+        rating.className = 'show_review_item4' 
+        rating.innerText = "Rated: " + review['rated']
+
+        const comment = document.createElement('div')
+        comment.className = 'show_review_item5' 
+        comment.innerText = review['content']
+
+        wrapper.appendChild(author)
+        wrapper.appendChild(img_div)
+        wrapper.appendChild(name)
+        wrapper.appendChild(rating)
+        wrapper.appendChild(comment)
+        main_wrap.appendChild(wrapper)
+       
 
     }
+}
+
 
     function Redirect(){
         window.location.href ='/movie';
