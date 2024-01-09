@@ -7,6 +7,7 @@ from datetime import datetime
 from functions import resizeImg, resizeMovieImg
 import urllib.request
 import os 
+from  werkzeug.security import generate_password_hash, check_password_hash
 import re 
 from flask_cors import CORS
 
@@ -79,7 +80,7 @@ class MovieImage(db.Model):
 
 
 
-@app.route("/", methods = ['GET','POST'])
+@app.route("/")
 def home():
     return render_template("main.html")
 
@@ -115,11 +116,15 @@ class UsersLogin(Resource):
     def post(self):
         item = request.json
         print(f"From post {item}")
-        if User.query.filter_by(email  = item.get('email'), password=item.get('password')).first() != None:
-            user = User.query.filter_by(email  = item.get('email'), password=item.get('password')).first()
-            login_user(user)
-            response_message = "ok"
-            return {"message": response_message}, 201
+        user_obj =User.query.filter_by(email  = item.get('email')).first()
+        if user_obj != None:
+            if check_password_hash(pwhash= user_obj.password,password=item.get('password')):
+                login_user(user_obj,duration=5)
+                response_message = "ok"
+                return {"message": response_message}, 201
+            else:
+                response_message = "no"
+                return {"message": response_message}, 201
         else:
             response_message = "no"
             return {"message": response_message}, 201
@@ -147,7 +152,7 @@ class UserRegister(Resource):
             print(userEmail)
             print(userPassword)
             print(userNick)
-            newUser = User(username=userNick,email= userEmail,password=userPassword, avatar = "default.png")
+            newUser = User(username=userNick,email= userEmail,password=generate_password_hash(password=userPassword), avatar = "default.png")
             db.session.add( newUser )
             db.session.commit()
             response_message = "ok"
@@ -174,10 +179,11 @@ class UserAlter(Resource):
             elif item.get('oldPassword'):
                 print(f"current password {current_user.password}")
                 
-                if item.get('oldPassword') != current_user.password:
+                if not check_password_hash(pwhash=current_user.password, password=item.get('oldPassword')):#item.get('oldPassword') != current_user.password:
                     return {"message" : "old_password"}
                 else:
-                    current_user.password = item.get("newPassword")
+
+                    current_user.password = generate_password_hash(item.get("newPassword"))
                 
             else:
                 new = item.get('newNick')
@@ -326,6 +332,7 @@ class Movie_template_handle(Resource):
             db.session.commit()
         else:
             rating_final = None
+            comments = None
       
         data = {
         'movie_img' : f"{val}_!_{movie_img_obj.name}",
@@ -403,6 +410,5 @@ api.add_resource(Movie_template_handle,'/movie_template_info/<val>')
 
 
 if __name__ == "__main__":
-
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run( host="0.0.0.0",port=5000, debug=True)
     db.init_app(app)

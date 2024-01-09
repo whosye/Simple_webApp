@@ -84,11 +84,12 @@ h1{
 
 }
 #avatar{
+    margin-top: 4px;
     border-width: 2px;
     border-style: solid;
     border-color: rgb(9, 9, 9);
     width: 100px; 
-    height: 100px;
+    height: 101px;
 }
 #settings_panel{
     position: absolute;
