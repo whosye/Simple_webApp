@@ -263,13 +263,13 @@ class AlterIMGs(Resource):
         os.remove(os.path.join(os.path.abspath('static'), f'{img_name_raw}'))
         
         print("Deleting", item.get("delete_image"))
-        
+     
 class InsertMovie(Resource):
     def get(self):
         movies = Moviestack.query.all()
         jsonList=[]
         for movie in movies:
-            movie_im = MovieImage.query.filter_by(movie_id = movie.id).one()
+            movie_im = MovieImage.query.filter_by(movie_id = movie.id).first()
             jsonList.append({
                 "movieID" : movie.id,
                 "movieName" : movie.movieName,
@@ -278,7 +278,28 @@ class InsertMovie(Resource):
 
             })
         return jsonify(jsonList)
+class AlterMovies(Resource):
+    def get(self):
+        
+        movies = Moviestack.query.filter_by(addedBy=current_user.id).all()
+        MovieList = []
+        if len(movies) != 0:
+            for movie in movies:
+                MovieList.append({
+                    'movieName' :  movie.movieName,
+                    'year' : movie.year,
+                    'description' : movie.description,
+                    'genre' : movie.genre,
+                    'direction' : movie.direction
+                })
 
+            return jsonify(MovieList)
+            """
+            else:
+                return jsonify({'data': 'No movies found for the current user'})
+        except:
+            return jsonify({'data' : 'error'})
+"""
 
     def post(self):
         
@@ -407,6 +428,7 @@ api.add_resource(SetAvatar,'/avatar')
 api.add_resource(AlterIMGs,'/alter_img')
 api.add_resource(InsertMovie,'/add_movie')
 api.add_resource(Movie_template_handle,'/movie_template_info/<val>')
+api.add_resource(AlterMovies,'/AlterMovies')
 
 
 if __name__ == "__main__":

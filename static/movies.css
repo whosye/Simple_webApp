@@ -360,3 +360,21 @@ h1{
     grid-template-columns:auto;
 
 }
+
+
+#UserMovies_wrapper{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+#UserMovies{
+    display: grid;
+    z-index:inherit;
+    top: 60px;
+    grid-template-columns: auto auto auto;
+    background-color: blanchedalmond;
+    width: 500px;
+    height:500px;
+}
