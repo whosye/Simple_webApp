@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, redirect, url_for, jsonify
+from flask import Flask, render_template, redirect, url_for, jsonify, flash
 from flask_restful import Api, Resource, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager,  login_user, login_required, current_user, logout_user, UserMixin
@@ -10,12 +10,20 @@ import os
 from  werkzeug.security import generate_password_hash, check_password_hash
 import re 
 from flask_cors import CORS
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = 'initialkey' 
 app.config['CLIENT_MAX_BODY_SIZE'] = 16 * 1024 * 1024
+app.config['MAIL_SERVER'] = 'smtp.seznam.cz'
+app.config['MAIL_PORT'] =465
+app.config['MAIL_USERNAME'] = 'projektotesanek@seznam.cz'
+app.config['MAIL_PASSWORD'] = '270797mM'
+app.config['MAIL_USE_TLS'] = False 
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 CORS(app)
 CORS(app, origins="*")
 api = Api(app)
@@ -112,6 +120,30 @@ def movie():
 def movie_template(movie_id):
     return render_template('movie_template.html', movie_id=movie_id)
 
+
+@app.route('/emailReq')
+def emailRequest():
+    return render_template('emailReq.html')
+
+@app.route('/RequestPassword', methods=['GET','POST'])
+def emailRequest2():
+    emailTry =  request.form['email']
+    try:  
+        user = User.query.filter_by(email=emailTry).first()
+        import random as rd
+        new =f"{rd.randint(1, 1000)}{rd.randint(1, 1000)}"
+        user.password =  generate_password_hash(new)
+        db.session.commit()
+        msg = Message("Hello from simplewebapp support", sender='projektotesanek@seznam.cz', recipients=[str(emailTry)])
+        msg.body = f"This is simple web support. This is your new generated password {new}    When you log in, change it."
+        mail.send(msg)
+        flash(message=f'We send you email on adress: {emailTry}')
+        return render_template('emailReq.html')
+    except:
+        flash(message=f'Couldnt send email on adress: {emailTry}')
+        return render_template('emailReq.html')
+
+
 class UsersLogin(Resource):
     def post(self):
         item = request.json
@@ -199,7 +231,7 @@ class UserAlter(Resource):
     
     def post(self):
         print("hi post ", current_user.id)
-        if 'file' not in request.files:
+        if not request.files:
             print("problem")
             return {'message': 'No file part'}, 400
         
@@ -395,10 +427,6 @@ class Movie_template_handle(Resource):
                 db.session.commit()
                 return 201
             else:
-                ###########
-                # TODO: ADD rating for movie overwrite the rating in db, create some additional table for rattings for movie - foreign keys - user, current movie, allowed only ONE ! 
-                # TODO: Add possibility to DELETE review 
-                # TODO: Add showing created reviews for current movie 
                 # TODO: Create searching mechanism 
                 comment_obj.content = content['data']
                 comment_obj.rating = int(content['rating'])

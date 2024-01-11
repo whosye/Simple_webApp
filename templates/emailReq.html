@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='emailRequest.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <div id="MainWrap">
+
+    
+        <div id="Wrapper">
+            <h1>Email Request</h1>
+            <p>Type you email adress, and we will send you a new password</p>
+            <form method="post" action='RequestPassword'>
+                <input type="email" name="email">
+                <br>
+                <input type="submit" value='Request'id='RequestPassword'>
+            </form> 
+            <br>
+            {% for  message in get_flashed_messages() %}
+                <p> {{message}}</p>
+                {% endfor %}
+
+            <a href="{{url_for('home')}}">Log in</a>
+        </div>
+    </div>
+
+
+</body>
+
+<script>
+    function Redirect(){
+        
+    }
+</script>
+</html>
