@@ -136,10 +136,19 @@
     </div>
 
     <div id="UserMovies_wrapper">
-        <div id="UserMovies">
+        <div id="UserMovie_wrapper">
             <div id="button_wrap">
                 <h2>Your Movies</h2>
                 <button id='returnButton_created_movies'>Return</button>
+            </div>
+            <div id="UserMovies"></div>
+
+        </div>
+
+        <div id="UserMovies2">
+            <div id="button_wrap2">
+                <h2>Your Movie</h2>
+                <button id='returnButton_created_movies2'>Return</button>
             </div>
         </div>
     </div>
@@ -154,13 +163,17 @@
             const UserMovies_wrapper = document.getElementById('UserMovies_wrapper');
             const UserMovies = document.getElementById('UserMovies');
             const button_wrap = document.getElementById('button_wrap')
-
+            const UserMovies2 = document.getElementById('UserMovies2')
+            const button_wrap2 = document.getElementById('button_wrap2')
             const divLists = [UserMovies_wrapper, UserMovies, button_wrap]
-
+            const divLists2 = [UserMovies, button_wrap]
+            const divLists22 = [ button_wrap2]
+      
             /* initialy hidden */
             UserMovies_wrapper.style.visibility = 'hidden';
             UserMovies.style.visibility = 'hidden';
             button_wrap.style.visibility = 'hidden';
+            button_wrap2.style.visibility = 'hidden';
 
             let movieList = null;
             let cacheTimeout = 60;
@@ -199,11 +212,18 @@
             })
 
             function ShowCreatedMoviesDIVs(data){
+                
+                while (UserMovies.firstChild) {
+                    UserMovies.removeChild(UserMovies.firstChild);
+                }
 
+                
                 divLists.forEach(argument => hideOrVisible('visible', argument))
         
                 Modal.style.visibility = 'visible';
                 for  (const key in data){
+
+                        const partMovDict = {'movieName' : data[key]['movieName'],'year' : data[key]['year']  , 'genre' : data[key]['genre'], 'description' : data[key]['description'], 'direction' : data[key]['direction']}
                         console.log(data[key]['movieName'])
                         const div = document.createElement('div')
                         const change = document.createElement('button')
@@ -215,6 +235,12 @@
                         div.appendChild(deleteB)
                         div.id = "show_created_movies_flex"
                         change.innerText = "Change";
+                        change.addEventListener('click', ()=>{
+                            ShowCreatedMoviesDIVs2(partMovDict)
+                            divLists2.forEach(argument => hideOrVisible('hidden', argument))
+                            divLists22.forEach(argument => hideOrVisible('visible', argument))
+
+                        })
                         deleteB.innerText = "deleteB"
                         deleteB.addEventListener('click', ()=>{
                             console.log(
@@ -227,7 +253,38 @@
             }
 
 
+            function ShowCreatedMoviesDIVs2(input){
+                console.log(`i will show you movie`+input['movieName'])
 
+            
+                
+            }
+
+            document.getElementById('returnButton_created_movies2').addEventListener('click',()=>{
+                divLists22.forEach(argument => hideOrVisible('hidden', argument))
+                divLists2.forEach(argument => hideOrVisible('visible', argument))
+            })
+/*
+                <div id="addMovie_grid">
+                    <div><label for="movie_name">Movie Name: </label></div>
+                    <div><input id="movie_name"></div>
+                    <div><label for="movie_year">Year: </label></div>
+                    <div><input id="movie_year"></div>
+
+                    <div><label for="rezie">Direction: </label></div>
+                    <div><input id="rezie"></div>
+                    <div><label for="zanr">Genre: </label></div>
+                    <div><input id="zanr"></div>
+                    
+                    <div><label for="movie_image">Img: </label></div>
+                    <div><input type=file id="movie_image"></div>
+                    <div><label for="movie_description">Description: </label></div>
+                    <div><textarea rows="6" cols="25" id="movie_description"></textarea></div>
+                    <div><button id="cancel_addMovie_panel">Cancel</button></div>
+                    <div><button id="insert_new_movie">Submit</button></div>
+                    <div><span id="adding_movie_error"></span> </div>
+                    <button id="show_your_movies_button">Show Created</button>
+                </div>*/
 
 
             document.getElementById("show_your_movies_button").addEventListener('click',() =>{
