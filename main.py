@@ -350,12 +350,7 @@ class AlterMovies(Resource):
                 })
 
             return jsonify(MovieList)
-            """
-            else:
-                return jsonify({'data': 'No movies found for the current user'})
-        except:
-            return jsonify({'data' : 'error'})
-"""
+
 
 
 

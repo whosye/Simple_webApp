@@ -362,7 +362,7 @@ h1{
 }
 
 
-#UserMovies_wrapper{
+#UserMovies_wrapper_main{
     position: fixed;
     top: 50%;
     left: 50%;
@@ -373,6 +373,7 @@ h1{
     height:500px;
 
 }
+
 #UserMovies{
     display: grid;
     z-index:inherit;
@@ -403,7 +404,16 @@ h1{
 
 #button_wrap2{
 
-    text-align: center;
+    text-align: top;
     margin-top: 10px;
     margin-bottom: 50px;
+}
+
+#UserMovies2{
+    display: grid;
+    z-index:inherit;
+    top: 60px;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-content: center;
 }
