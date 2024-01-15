@@ -32,11 +32,11 @@
             <div id="grid2">
                 <div id="item4"></div>
                 <div id="item5"><img id="movie_img"></div>
-                <div id="item6">Rezie: Riddley Scott</div>
-                <div id="item7">Zanr: Drama</div>
-                <div id="item8">Hodnoceni: ?</div>
+                <div id="item6"> </div>
+                <div id="item7"> </div>
+                <div id="item8"></div>
                 <div id="item9"></div>
-                <div id="item92">Popis:</div>
+                <div id="item92">Description:</div>
                 <div id="item10"></div>
                 <div id="item11"><button id='review_button'>Review</button></div>
                 <div id="item12"><button onclick="Redirect()">Back</button></div>
@@ -215,6 +215,8 @@
         document.getElementById("movie_img").src = "{{ url_for('static', filename='movie_images/', _external=True) }}" + data['movie_img'];
         document.getElementById("item9").innerText =  'Rok Vydani: ' +data['year'];
         document.getElementById("item10").innerText = data['description'];
+        document.getElementById("item6").innerText = 'Direction: ' +data['direction'];
+        document.getElementById("item7").innerText = 'Genre: '+data['genre'];
     }
     function fillTheGrid3(data) {
         const main_wrap= document.getElementById("show_review_wrapper")

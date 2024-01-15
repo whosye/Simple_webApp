@@ -310,29 +310,6 @@ class InsertMovie(Resource):
 
             })
         return jsonify(jsonList)
-class AlterMovies(Resource):
-    def get(self):
-        
-        movies = Moviestack.query.filter_by(addedBy=current_user.id).all()
-        MovieList = []
-        if len(movies) != 0:
-            for movie in movies:
-                MovieList.append({
-                    'movieName' :  movie.movieName,
-                    'year' : movie.year,
-                    'description' : movie.description,
-                    'genre' : movie.genre,
-                    'direction' : movie.direction
-                })
-
-            return jsonify(MovieList)
-            """
-            else:
-                return jsonify({'data': 'No movies found for the current user'})
-        except:
-            return jsonify({'data' : 'error'})
-"""
-
     def post(self):
         
             movie_name = request.form.get('movie_name')
@@ -357,6 +334,30 @@ class AlterMovies(Resource):
             resizeMovieImg(img= movie_img, key=  img_db_key.id , name=movie_img.filename)
             print(  movie_name , movie_year, movie_img.filename )
             return{'message' : 'ok'}
+class AlterMovies(Resource):
+    def get(self):
+        
+        movies = Moviestack.query.filter_by(addedBy=current_user.id).all()
+        MovieList = []
+        if len(movies) != 0:
+            for movie in movies:
+                MovieList.append({
+                    'movieName' :  movie.movieName,
+                    'year' : movie.year,
+                    'description' : movie.description,
+                    'genre' : movie.genre,
+                    'direction' : movie.direction
+                })
+
+            return jsonify(MovieList)
+            """
+            else:
+                return jsonify({'data': 'No movies found for the current user'})
+        except:
+            return jsonify({'data' : 'error'})
+"""
+
+
 
 
 class Movie_template_handle(Resource):
@@ -397,7 +398,9 @@ class Movie_template_handle(Resource):
         'creator_name' : creator_obj.username,
         'creator_img' :  creator_obj.avatar,
         'rating' : rating_final,
-        'reviews' : comments
+        'reviews' : comments,
+        'genre' :   movie_obj.genre,
+        'direction' :movie_obj.direction,
         }
 
         print(f"data : {data}")

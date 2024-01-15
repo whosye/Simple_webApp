@@ -216,6 +216,11 @@
                         div.id = "show_created_movies_flex"
                         change.innerText = "Change";
                         deleteB.innerText = "deleteB"
+                        deleteB.addEventListener('click', ()=>{
+                            console.log(
+                                `Deleting ${data[key]['movieName']}`
+                            )
+                        })
                         movie_label.innerText =data[key]['movieName']
                         UserMovies.appendChild(div)
                 }

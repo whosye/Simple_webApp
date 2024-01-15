@@ -4,7 +4,9 @@ body{
     margin: 0;
 }
 
-
+#item6{
+    overflow-x: auto;
+}
 #modal{
     position: fixed;
     top: 0;
@@ -26,7 +28,7 @@ body{
     align-items: center;
     left: 50%;
     transform: translate(-50%, 0);
-    width: 400px;
+    width: 600px;
     height: 500px;
     background-color:  blanchedalmond;
     z-index: 4;
@@ -88,7 +90,7 @@ body{
 }
 #wrapper{
     display: grid;
-    grid-template-columns: 100px 100px 100px 100px;
+    grid-template-columns: 100px 100px 200px 200px;
     background-color:  blanchedalmond;
     padding: 20px; 
     border-bottom: 50px;
@@ -102,7 +104,7 @@ body{
     grid-column: 2 /5; 
     grid-row: 1 / 2;
     display: grid;
-    grid-template-columns: 50px 50px 50px;
+    grid-template-columns: 50px 50px 80px;
     background-color: gray;
 
 }
@@ -115,12 +117,13 @@ body{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     display: grid;
-    grid-template-columns: 20px 20px 20px 20px 20px 20px;
-    grid-template-rows: 40px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;
+    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+    /*grid-template-rows: 40px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px 20px;*/
+    grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
 }
 
 #item4{/*nazev*/ 
-    grid-column: 1 / 12;  
+    grid-column: 1 / 11;  
     grid-row: 1 / 2;   
     background-color: azure;
 
@@ -132,29 +135,29 @@ body{
 }
 
 #item6{/*rezie*/ 
-    grid-column: 7 / 12;  
+    grid-column: 4 / 10;  
     grid-row: 2/ 3;   
 }
 
 #item7{/*zanr*/ 
-    grid-column: 7 / 12;  
+    grid-column: 4 / 10;   
     grid-row: 3 / 4;   
 }
 #item8{/*hodnoceni*/ 
-    grid-column:7/ 12;  
+    grid-column: 4 / 10;  
     grid-row: 4 / 5;   
 }
 #item9{/*rok*/ 
-    grid-column: 7 / 12;    
+    grid-column:4 / 10; 
     grid-row: 5 / 6;   
 }
-#item92{/*rok*/ 
+#item92{/*Description*/ 
     grid-column: 1 / 12;  
-    grid-row: 8 /9; 
+    grid-row: 6 /7; 
 }
-#item10{/*popis*/ 
+#item10{/*Description*/ 
     grid-column: 1 / 12;  
-    grid-row: 9/12;   
+    grid-row: 7/12;   
     background-color: azure;
     width: 300px;
     overflow: auto;
