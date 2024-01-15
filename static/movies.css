@@ -368,13 +368,35 @@ h1{
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
+    background-color: blanchedalmond;
+    width: 500px;
+    height:500px;
+
 }
 #UserMovies{
     display: grid;
     z-index:inherit;
     top: 60px;
-    grid-template-columns: auto auto auto;
-    background-color: blanchedalmond;
-    width: 500px;
-    height:500px;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-content: center;
+}
+
+#show_created_movies_flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.movie_label_flex{
+    width: 100px;
+}
+#button_wrap{
+
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 50px;
 }
