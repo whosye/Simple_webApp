@@ -213,7 +213,7 @@
             document.getElementById("item8").innerText = 'Rating: ' +data['rating']
         }
         document.getElementById("movie_img").src = "{{ url_for('static', filename='movie_images/', _external=True) }}" + data['movie_img'];
-        document.getElementById("item9").innerText =  'Rok Vydani: ' +data['year'];
+        document.getElementById("item9").innerText =  'Release: ' +data['year'];
         document.getElementById("item10").innerText = data['description'];
         document.getElementById("item6").innerText = 'Direction: ' +data['direction'];
         document.getElementById("item7").innerText = 'Genre: '+data['genre'];
