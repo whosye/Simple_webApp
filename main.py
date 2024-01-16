@@ -334,19 +334,50 @@ class InsertMovie(Resource):
             resizeMovieImg(img= movie_img, key=  img_db_key.id , name=movie_img.filename)
             print(  movie_name , movie_year, movie_img.filename )
             return{'message' : 'ok'}
+    
+    def put(self):
+        
+        movie_name = request.form.get('movie_name')
+        movie_year = request.form.get('year')
+        movie_genre= request.form.get('genre')
+        movie_direction = request.form.get('direction')
+        movie_img = request.files.get('img')
+        movie_desc = request.form.get('description')
+        movie_id= request.form.get('movie_id')
+
+        movie_obj = Moviestack.query.filter_by(id=movie_id).first()
+        if movie_img is not None:
+            movie_img_obj = MovieImage.query.filter_by(movie_id=movie_id).first()
+            os.remove(f'static\movie_images\{movie_img_obj.id}_!_{movie_img_obj.name}')
+            resizeMovieImg(img= movie_img, key= movie_img_obj.id , name=movie_img.filename)
+            movie_img_obj.name = movie_img.filename
+        
+        movie_obj.movieName = movie_name
+        movie_obj.year=movie_year
+        movie_obj.description= movie_desc
+        movie_obj.genre =movie_genre
+        movie_obj.direction=movie_direction
+        db.session.commit()
+        return{'message' : 'ok'}
+
+
 class AlterMovies(Resource):
     def get(self):
         
         movies = Moviestack.query.filter_by(addedBy=current_user.id).all()
+       
         MovieList = []
         if len(movies) != 0:
             for movie in movies:
+                img_obj = MovieImage.query.filter_by(movie_id=movie.id).first()
                 MovieList.append({
                     'movieName' :  movie.movieName,
                     'year' : movie.year,
                     'description' : movie.description,
                     'genre' : movie.genre,
-                    'direction' : movie.direction
+                    'direction' : movie.direction,
+                    'img' : f'{img_obj.id}_!_{img_obj.name}',
+                    'movie_id' : movie.id
                 })
 
             return jsonify(MovieList)

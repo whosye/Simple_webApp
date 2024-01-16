@@ -146,9 +146,9 @@
             <div id="UserMovies"></div>
 
      
-    
+    </div>
 
-   
+    <div id="UserMovies_wrapper_main2">
 
         <div id="button_wrap2">
             <h2>Your Movie</h2>
@@ -157,10 +157,10 @@
 
 
         <div id='UserMovies2'></div>
-
+        <br>
         <div id='Submit_new_movie_changes'>
-            <button id='Submit_new_movie_changes_button'></button>
-            <span id='Submit_new_movie_changes_info'></span>
+            <button id='Submit_new_movie_changes_button'>Submit</button>
+            <span id='Submit_new_movie_changes_info'>info</span>
         </div>
     </div>
    
@@ -176,20 +176,18 @@
             const UserMovies = document.getElementById('UserMovies');
             const button_wrap = document.getElementById('button_wrap')
 
+            const UserMovies_wrapper2 = document.getElementById('UserMovies_wrapper_main2');
             const UserMovies2 = document.getElementById('UserMovies2')
             const button_wrap2 = document.getElementById('button_wrap2')
             const Submit_new_movie_changes = document.getElementById('Submit_new_movie_changes')
 
             const divLists1  = [ UserMovies, button_wrap]
-            const divLists2 = [ button_wrap2, UserMovies2, , Submit_new_movie_changes]
+            const divLists2 = [ button_wrap2, UserMovies2, Submit_new_movie_changes]
       
             /* initialy hidden */
             UserMovies_wrapper.style.visibility = 'hidden';
-            UserMovies.style.visibility = 'hidden';
-            button_wrap.style.visibility = 'hidden';
-            button_wrap2.style.visibility = 'hidden';
-            UserMovies2.style.visibility = 'hidden';
-            Submit_new_movie_changes.style.visibility = 'hidden';
+            UserMovies_wrapper2.style.visibility = 'hidden';
+
 
             let movieList = null;
             let cacheTimeout = 60;
@@ -215,22 +213,13 @@
                     }
                 }
                     
-            function hideOrVisible(type, item){
-                if (type === 'hidden'){
-                    item.style.visibility = 'hidden'
-                    console.log(item)
-                }else{
-                    console.log('showing')
 
-                    
-                    item.style.visibility = 'visible'
-                }
-            }
             document.getElementById('returnButton_created_movies').addEventListener('click', ()=>{
-                divLists1.forEach(argument => hideOrVisible('hidden', argument))
-                divLists2.forEach(argument => hideOrVisible('hidden', argument))
+
                 Modal.style.visibility = 'hidden'
-                UserMovies_wrapper.style.visibility = 'hidden'
+                UserMovies_wrapper.style.visibility = 'hidden';
+                UserMovies_wrapper2.style.visibility = 'hidden';
+                window.location.href ='/movie';
             })
 
             function ShowCreatedMoviesDIVs(data){
@@ -240,13 +229,20 @@
                 }
 
                 
-                divLists1.forEach(argument => hideOrVisible('visible', argument))
                 Modal.style.visibility = 'visible'
                 UserMovies_wrapper.style.visibility ='visible'
      
                 for  (const key in data){
 
-                        const partMovDict = {'movieName' : data[key]['movieName'],'year' : data[key]['year']  , 'genre' : data[key]['genre'], 'description' : data[key]['description'], 'direction' : data[key]['direction']}
+                        const partMovDict = {'movieName' : data[key]['movieName'],
+                        'year' : data[key]['year']  ,
+                         'genre' : data[key]['genre'],
+                          'description' : data[key]['description'],
+                          'direction' : data[key]['direction'],
+                           'img' : data[key]['img'],
+                           'movieId' : data[key]['movie_id']
+                        
+                        }
                         console.log(data[key]['movieName'])
                         const div = document.createElement('div')
                         const change = document.createElement('button')
@@ -260,8 +256,8 @@
                         change.innerText = "Change";
                         change.addEventListener('click', ()=>{
                             ShowCreatedMoviesDIVs2(partMovDict)
-                            divLists1.forEach(argument => hideOrVisible('hidden', argument))
-                            divLists2.forEach(argument => hideOrVisible('visible', argument))
+                            UserMovies_wrapper.style.visibility = 'hidden';
+                            UserMovies_wrapper2.style.visibility = 'visible';
 
                         })
                         deleteB.innerText = "deleteB"
@@ -277,13 +273,18 @@
 
 
             function ShowCreatedMoviesDIVs2(input){
-                console.log(`i will show you movie`+input['movieName'])
+
+                while (UserMovies2.firstChild) {
+                    UserMovies2.removeChild(UserMovies2.firstChild);
+                }
+                console.log()
                 const label1 = document.createElement('label')
                 const label2 = document.createElement('label')
                 const label3 = document.createElement('label')
                 const label4 = document.createElement('label')
                 const label5 = document.createElement('label')
                 const label6 = document.createElement('label')
+                const label7 = document.createElement('label')
 
                 const input1 = document.createElement('input')
                 const input2 = document.createElement('input')
@@ -291,6 +292,7 @@
                 const input4 = document.createElement('input')
                 const input5 = document.createElement('img')
                 const input6 = document.createElement('textarea')
+                const input7 = document.createElement('input')
 
                 label1.for = 'movie_name'
                 label2.for = 'direction'
@@ -298,40 +300,140 @@
                 label4.for = 'img'
                 label5.for = 'oldImg'
                 label6.for = 'description'
+                label7.for = 'Release'
+
+                label1.innerText = 'movie_name'
+                label2.innerText = 'direction'
+                label3.innerText = 'genre'
+                label4.innerText = 'img'
+                label5.innerText = 'Old image:'
+                label6.innerText = 'description'
+                label7.innerText = 'Release'
 
                 input1.id = 'movie_name'
                 input2.id = 'direction'
                 input3.id = 'genre'
-                input4.id = 'img'
-                input4.className = 'IMG_ZOOM'
-                input5.id = 'oldImg'
+                input4.id = 'Change_image'
+                input4.type='file'
+                input5.id = 'Old image'
+                input5.src = `..\\static\\movie_images\\${input['img']}`
                 input6.id = 'description'
+                input6.rows="6"
+                input6.cols="25"
+                input7.id = 'Release'
 
-                label1.innerText = input['movieName']
-                label2.innerText = input['direction']
-                label3.innerText = input['genre']
-                label4.innerText = 'Image'
-                label5.innerText = 'Oldimg'
-                label6.innerText = input['Description']
 
-                labels = [label1 ,label2 ,label3 ,label4 ,label5 ,label6]
-                inputs = [input1 ,input2 ,input3 ,input4 ,input5 ,input6]
+
+                input1.value= input['movieName']
+                input2.value = input['direction']
+                input3.value = input['genre']
+                input7.value = input['year']
+                input6.value = input['description']
+                           
+                const div1 = document.createElement('div')
+                div1.className = 'show_created_movie_change'
+                div1.appendChild(label1)
+                div1.appendChild(input1)
+
+                const div2 = document.createElement('div')
+                div2.className = 'show_created_movie_change'
+                div2.appendChild(label2)
+                div2.appendChild(input2)
+
+                const div3 = document.createElement('div')
+                div3.className = 'show_created_movie_change'
+                div3.appendChild(label3)
+                div3.appendChild(input3)
+
+                const div4 = document.createElement('div')
+                div4.className = 'show_created_movie_change'
+                div4.appendChild(label4)
+                div4.appendChild(input4)
+                
+                const div5 = document.createElement('div')
+                div5.className = 'show_created_movie_change'
+                div5.appendChild(label5)
+                div5.appendChild(input5)
+
+                const div6 = document.createElement('div')
+                div6.className = 'show_created_movie_change'
+                div6.appendChild(label6)
+                div6.appendChild(input6)
+
+                const div7 = document.createElement('div')
+                div7.className = 'show_created_movie_change'
+                div7.appendChild(label7)
+                div7.appendChild(input7)
+
+                divs= [div1 ,div2 ,div3,div7,div4 ,div6,div5]
+                inputs = {'movie_name' : input1,
+                        'direction' : input2,
+                        'genre' :  input3,
+                        'year' : input7,
+                        'img' : input4 , 
+                        'description' : input6,
+                        'movie_id' :  input['movieId']}
 
                 function appendToMovies2(argument){
                     document.getElementById('UserMovies2').appendChild(argument)
                 }
 
-                labels.forEach(argument =>appendToMovies2(argument) )
-                inputs.forEach(argument =>appendToMovies2(argument) )
+                divs.forEach(argument =>appendToMovies2(argument) )
+                document.getElementById('Submit_new_movie_changes_button').addEventListener('click',()=>{
+                    console.log(inputs['movie_name'])
+                    console.log(inputs['description'])
+                    const formData = new FormData();
+                    formData.append('movie_name', inputs['movie_name'].value);
+                    formData.append('direction', inputs['direction'].value);
+                    formData.append('genre', inputs['genre'].value);
+                    formData.append('year',inputs['year'].value);
+                    formData.append('description', inputs['description'].value);
+                    formData.append('movie_id' , input['movieId'])
 
-            
+                    if (inputs['img'].files.length > 0){
+                      
+                        formData.append('img', inputs['img'].files[0]);
+                        console.log('sending img')
+
+                    }else{
+                        formData.append('img',null)
+                    }
+                    changeMovieParameters(formData)
+                })
+
                 
             }
 
+            async function changeMovieParameters(formData){
+                try{
+                    console.log("posilam data daaal")
+                    let response = await fetch('/add_movie',{
+                        method: 'PUT',
+                        body: formData,
+
+                    })
+                    data =  await response.json()
+
+                    if (data.message == 'ok'){
+                        document.getElementById("Submit_new_movie_changes_info").innerText = "Upload Succesfuly";
+                        document.getElementById("Submit_new_movie_changes_infot").style.backgroundColor= "green";
+                        // TOdo handle more than 3 photos 
+                    }else{
+                        document.getElementById("Submit_new_movie_changes_info").innerText = "Something went wrong";
+                        document.getElementById("Submit_new_movie_changes_info").style.backgroundColor= "red";
+                    }
+
+                }catch(error){
+                    console.log(`This error occured ${error}`);
+                }}
+ 
+
             document.getElementById('returnButton_created_movies2').addEventListener('click',()=>{
-                divLists22.forEach(argument => hideOrVisible('hidden', argument))
-                divLists2.forEach(argument => hideOrVisible('visible', argument))
+                UserMovies_wrapper.style.visibility = 'visible';
+                UserMovies_wrapper2.style.visibility = 'hidden';
             })
+
+
 /*
                 <div id="addMovie_grid">
                     <div><label for="movie_name">Movie Name: </label></div>
