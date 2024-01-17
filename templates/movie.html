@@ -263,8 +263,10 @@
                         deleteB.innerText = "deleteB"
                         deleteB.addEventListener('click', ()=>{
                             console.log(
-                                `Deleting ${data[key]['movieName']}`
+                                `Deleting ${data[key]['movie_id']}`
                             )
+
+                            deleteMovie(data[key]['movie_id'])
                         })
                         movie_label.innerText =data[key]['movieName']
                         UserMovies.appendChild(div)
@@ -403,6 +405,38 @@
 
                 
             }
+
+            async function deleteMovie(movieId){
+                try{
+                    console.log("posilam data daaal")
+                    let response = await fetch('/add_movie',{
+                        method:"delete",
+                        headers: {'Content-type' : 'application/json'}, 
+                        body: JSON.stringify({"movie_id" :movieId})
+
+                    })
+                    data =  await response.json()
+
+                    if (data.message == 'ok'){
+                        setTimeout( function(){
+                                location.reload();
+                            }, 500);
+                        location.reload()
+                       
+                    }else{
+                        document.getElementById("Submit_new_movie_changes_info").innerText = "Something went wrong";
+                        document.getElementById("Submit_new_movie_changes_info").style.backgroundColor= "red";
+                    }
+
+                }catch(error){
+                    console.log(`This error occured ${error}`);
+                }}
+ 
+
+            document.getElementById('returnButton_created_movies2').addEventListener('click',()=>{
+                UserMovies_wrapper.style.visibility = 'visible';
+                UserMovies_wrapper2.style.visibility = 'hidden';
+            })
 
             async function changeMovieParameters(formData){
                 try{

@@ -359,6 +359,19 @@ class InsertMovie(Resource):
         movie_obj.direction=movie_direction
         db.session.commit()
         return{'message' : 'ok'}
+    
+    def delete(self):
+        try:
+            movie_id = request.json
+            movie_id = movie_id['movie_id']
+            movie_obj =  Moviestack.query.filter_by(id=movie_id).first()
+            db.session.delete(movie_obj)
+            db.session.commit()
+            return{'message' : 'ok'}
+        except:
+            return{'message' : 'no'}
+
+
 
 
 class AlterMovies(Resource):
