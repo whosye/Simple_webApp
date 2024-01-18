@@ -20,7 +20,7 @@ app.config['CLIENT_MAX_BODY_SIZE'] = 16 * 1024 * 1024
 app.config['MAIL_SERVER'] = 'smtp.seznam.cz'
 app.config['MAIL_PORT'] =465
 app.config['MAIL_USERNAME'] = 'projektotesanek@seznam.cz'
-app.config['MAIL_PASSWORD'] = ''
+app.config['MAIL_PASSWORD'] = '270797mM'
 app.config['MAIL_USE_TLS'] = False 
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -502,5 +502,5 @@ api.add_resource(AlterMovies,'/AlterMovies')
 
 
 if __name__ == "__main__":
-    app.run( host="0.0.0.0",port=5000, debug=True)
+    app.run( host="0.0.0.0",port=5000)
     db.init_app(app)
