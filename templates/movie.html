@@ -9,6 +9,7 @@
 
 </head>
 <body>
+    <h1>Logged user: {{user_data.username}}</h1>
     <div id="container">
         <div id="main-item1">
             <div id="user_panel">
@@ -122,17 +123,7 @@
         </div>
 
 
-        <div id="main-item3">
-            <h1>Searching panel</h1>
-            <div id="main-item3_wrapper">
-                <div id="main-item3_wrapper_item0"><p id="logged_user">Logged user: {{user_data.username}}</p></div>
-                <div id="main-item3_wrapper_item1"><label for="search_movie" id="search_movie_label">Search</label></div>
-                <div id="main-item3_wrapper_item2"><input id="search_movie"></div>
-                <div id="main-item3_wrapper_item3"><button id="search_movie_button"></button></div>
-                <div id="main-item3_wrapper_item4"><button id="show_all_movie_button">show All</button></div>
-                <div id="main-item3_wrapper_color"></div>
-            </div>
-        </div> 
+
     </div>
 
     <div id="UserMovies_wrapper_main">
@@ -466,29 +457,6 @@
                 UserMovies_wrapper.style.visibility = 'visible';
                 UserMovies_wrapper2.style.visibility = 'hidden';
             })
-
-
-/*
-                <div id="addMovie_grid">
-                    <div><label for="movie_name">Movie Name: </label></div>
-                    <div><input id="movie_name"></div>
-                    <div><label for="movie_year">Year: </label></div>
-                    <div><input id="movie_year"></div>
-
-                    <div><label for="rezie">Direction: </label></div>
-                    <div><input id="rezie"></div>
-                    <div><label for="zanr">Genre: </label></div>
-                    <div><input id="zanr"></div>
-                    
-                    <div><label for="movie_image">Img: </label></div>
-                    <div><input type=file id="movie_image"></div>
-                    <div><label for="movie_description">Description: </label></div>
-                    <div><textarea rows="6" cols="25" id="movie_description"></textarea></div>
-                    <div><button id="cancel_addMovie_panel">Cancel</button></div>
-                    <div><button id="insert_new_movie">Submit</button></div>
-                    <div><span id="adding_movie_error"></span> </div>
-                    <button id="show_your_movies_button">Show Created</button>
-                </div>*/
 
 
             document.getElementById("show_your_movies_button").addEventListener('click',() =>{
@@ -958,6 +926,7 @@
                 }
             }
 
+
             window.addEventListener('load', movie);
 
 
@@ -966,6 +935,7 @@
                     let response = await fetch('/add_movie',{
                         method: "GET",
                         headers: {'Content-type' : 'application/json'}, 
+
                     })
                     data = await response.json();
                     showData(data)
