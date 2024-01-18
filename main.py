@@ -15,12 +15,12 @@ from flask_mail import Mail, Message
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SECRET_KEY'] = 'initialkey' 
+app.config['SECRET_KEY'] = ''  # fill
 app.config['CLIENT_MAX_BODY_SIZE'] = 16 * 1024 * 1024
 app.config['MAIL_SERVER'] = 'smtp.seznam.cz'
 app.config['MAIL_PORT'] =465
-app.config['MAIL_USERNAME'] = 'projektotesanek@seznam.cz'
-app.config['MAIL_PASSWORD'] = '270797mM'
+app.config['MAIL_USERNAME'] = '' # fill
+app.config['MAIL_PASSWORD'] = '' # fill
 app.config['MAIL_USE_TLS'] = False 
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
